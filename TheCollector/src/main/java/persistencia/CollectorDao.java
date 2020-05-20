@@ -86,7 +86,7 @@ public class CollectorDao {
     *
     * @throws SQLException
     */
-    public void conectar() throws SQLException {      
+    public void conectar() throws SQLException { 
         String url = "jdbc:mysql://localhost:3306/thecollector?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
         String user = "root";
         String pass = "";

@@ -9,8 +9,6 @@ import excepciones.Excepcion;
 import manager.Controlador;
 import java.awt.Color;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class Login extends javax.swing.JDialog {
@@ -38,11 +36,7 @@ public class Login extends javax.swing.JDialog {
             System.err.println("Couldn't find file: " + path);
             return null;
         }
-    }*/
-    
-    /*private void initAssets(){
-        jLabel5.setIcon(new javax.swing.ImageIcon("C:\\Users\\ROGER\\Documents\\NetBeansProjects\\Collector\\TheCollector\\src\\main\\java\\assets\\logofondo.PNG"));
-    }*/
+    }*/   
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
