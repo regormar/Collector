@@ -7,11 +7,13 @@ import java.util.List;
 public class Succestion extends Exception{
     
     public static final int BOOK_ADDED = 0;
+    public static final int USER_REGISTERED = 6;
     
     private int code;
 
     private final List<String> MESSAGES = Arrays.asList(
-        "¡Libro registrado con éxito!"
+        "¡Libro registrado con éxito!",
+        "!Usuario registrado con éxito!"
     );
 
     public Succestion(int code) {

@@ -30,9 +30,14 @@ public class Controlador {
     
     public boolean validarUsuario(String u, String p) throws SQLException, Excepcion{
         boolean validado = false;
+        if(!collectorDao.checkLogin(u, p)){
+            throw new Excepcion(Excepcion.ERROR_LOGIN_INCORRECTO); 
+        }
         if(collectorDao.checkLogin(u, p)){
             currentUser = collectorDao.getUser(u);
             validado = true;
+        } else{
+            
         }
         return validado;
     }

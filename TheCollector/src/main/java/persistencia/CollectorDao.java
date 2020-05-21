@@ -90,10 +90,6 @@ public class CollectorDao {
     }
     
     public Usuario getUser(String nombre) throws SQLException, Excepcion {
-        Usuario taux = new Usuario(nombre);
-        if (!checkUsername(taux)) {
-            throw new Excepcion(Excepcion.ERROR_USER_NOT_FOUND);
-        }
         String select = "select * from usuario where username='" + nombre + "'";
         Statement st = conexion.createStatement();
         ResultSet rs = st.executeQuery(select);

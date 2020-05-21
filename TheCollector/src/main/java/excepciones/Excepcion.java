@@ -9,8 +9,9 @@ public class Excepcion extends Exception {
     public static final int ERROR_EXIST_USER_NAME = 0;
     public static final int ERROR_USER_NOT_FOUND = 1;
     public static final int ERROR_EMPTY_FIELDS = 2;
-    public static final int ERROR_DIFFERENT_PASSWORDS= 3;
-    public static final int ERROR_USERNAME_NOT_AVAILABLE= 4;
+    public static final int ERROR_DIFFERENT_PASSWORDS = 3;
+    public static final int ERROR_USERNAME_NOT_AVAILABLE = 4;
+    public static final int ERROR_LOGIN_INCORRECTO = 5;
     
     private int code;
 
@@ -18,8 +19,9 @@ public class Excepcion extends Exception {
         "Ya existe un usuario con ese nombre",
         "Nombre de usuario incorrecto",
         "Campos vacíos",
-        "Las contraseñas no coinciden.",
-        "El nombre de usuario no esta disponible."
+        "Las contraseñas no coinciden",
+        "El nombre de usuario no esta disponible",
+        "Login incorrecto"     
     );
 
     public Excepcion(int code) {
