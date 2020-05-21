@@ -8,6 +8,7 @@ package persistencia;
 import excepciones.Excepcion;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -28,6 +29,36 @@ public class CollectorDao {
         }
         return instance;
     }
+    
+    //Funcion para comprobar si existe un usurio en la bbdd con el mismo nobre.
+    public boolean existeUsuario(String usu) throws SQLException {
+        String select = "select * from usuario where username='" + usu + "'";
+        Statement st = conexion.createStatement();
+        boolean existe = false;
+        ResultSet rs = st.executeQuery(select);
+        if (rs.next()) {
+            existe = true;
+        }
+        rs.close() ;
+        st.close();
+        return existe;
+    }
+    
+    //Funcion para insertar un usuario en la bbdd.
+    public void insertarUsuario(Usuario usu) throws SQLException {
+        String insert = "insert into usuario values (?, ?, ?, ?, ?, ?, ?);";
+        PreparedStatement ps = conexion.prepareStatement(insert);
+        ps.setString(1, null);
+        ps.setString(2, usu.getUsername());
+        ps.setString(3, usu.getPass());
+        ps.setString(4, usu.getNombre());
+        ps.setString(5, usu.getApellidos());
+        ps.setInt(6, 1);
+        ps.setString(7, usu.getEmail());
+        ps.executeUpdate();
+        ps.close();
+    }
+    
     
     public boolean checkLogin(String u, String p) throws SQLException {
         String pass = "";

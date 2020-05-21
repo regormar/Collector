@@ -33,4 +33,17 @@ public class Controlador {
             currentUser = collectorDao.getUser(u);
         }
     }
+    
+    public void validarRegistro(Usuario usu, String pass2) throws Excepcion, SQLException{
+        if(usu.getUsername().equals("") || usu.getNombre().equals("") || usu.getApellidos().equals("") || usu.getPass().equals("") || pass2.equals("") || usu.getEmail().equals("")){
+            throw new Excepcion(Excepcion.ERROR_EMPTY_FIELDS);
+        }
+        if(!usu.getPass().equals(pass2)){
+            throw new Excepcion(Excepcion.ERROR_DIFFERENT_PASSWORDS);
+        }
+        if(collectorDao.existeUsuario(usu.getUsername())){
+            throw new Excepcion(Excepcion.ERROR_USERNAME_NOT_AVAILABLE);
+        }
+        collectorDao.insertarUsuario(usu);
+    }
 }
