@@ -28,9 +28,12 @@ public class Controlador {
         return instance;
     }
     
-    public void validarUsuario(String u, String p) throws SQLException, Excepcion{
+    public boolean validarUsuario(String u, String p) throws SQLException, Excepcion{
+        boolean validado = false;
         if(collectorDao.checkLogin(u, p)){
             currentUser = collectorDao.getUser(u);
+            validado = true;
         }
+        return validado;
     }
 }

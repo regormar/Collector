@@ -251,7 +251,13 @@ public class Login extends javax.swing.JDialog {
                 if(pass.equals("") || usuario.equals("")){
                     throw new Excepcion(Excepcion.ERROR_EMPTY_FIELDS);
                 } 
-                manager.validarUsuario(usuario, pass);
+                if(manager.validarUsuario(usuario, pass)){
+                    result.setText("Login correcto");
+                    /*MainMenu menu = new MainMenu();
+                    menu.setLocationRelativeTo(null);
+                    menu.setVisible(true);*/
+                    System.exit(0);
+                }
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
