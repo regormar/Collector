@@ -12,6 +12,7 @@ public class Excepcion extends Exception {
     public static final int ERROR_DIFFERENT_PASSWORDS = 3;
     public static final int ERROR_USERNAME_NOT_AVAILABLE = 4;
     public static final int ERROR_LOGIN_INCORRECTO = 5;
+    public static final int ERROR_MOVIE_EXIST = 6;
     
     private int code;
 
@@ -21,7 +22,8 @@ public class Excepcion extends Exception {
         "Campos vacíos",
         "Las contraseñas no coinciden",
         "El nombre de usuario no esta disponible",
-        "Login incorrecto"     
+        "Login incorrecto",
+        "Esta pelicula ya existe"       
     );
 
     public Excepcion(int code) {

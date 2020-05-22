@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package persistencia;
 
 import excepciones.Excepcion;
@@ -12,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import modelo.Pelicula;
 import modelo.Usuario;
 
 /**
@@ -30,18 +26,17 @@ public class CollectorDao {
         return instance;
     }
     
-    //Funcion para comprobar si existe un usurio en la bbdd con el mismo nobre.
-    public boolean existeUsuario(String usu) throws SQLException {
-        String select = "select * from usuario where username='" + usu + "'";
-        Statement st = conexion.createStatement();
-        boolean existe = false;
-        ResultSet rs = st.executeQuery(select);
-        if (rs.next()) {
-            existe = true;
-        }
-        rs.close() ;
-        st.close();
-        return existe;
+    //Funcion para insertar una pelicula en la bbdd.
+    public void insertarPelicula(Pelicula p) throws SQLException {
+        String insert = "insert into pelicula values (?, ?, ?, ?, ?);";
+        PreparedStatement ps = conexion.prepareStatement(insert);
+        ps.setString(1, null);
+        ps.setString(2, p.getNombre());
+        ps.setString(3, p.getDireccion());
+        ps.setInt(4, p.getDuracion());
+        ps.setInt(5, p.getGenero());
+        ps.executeUpdate();
+        ps.close();
     }
     
     //Funcion para insertar un usuario en la bbdd.
@@ -59,6 +54,19 @@ public class CollectorDao {
         ps.close();
     }
     
+    //Funcion para comprobar si existe una pelicula en la bbdd con el mismo nombre y director.
+    public boolean checkPelicula(Pelicula p) throws SQLException {
+        String select = "select * from pelicula where username ='" + p.getNombre() + "'and direccion = '" + p.getDireccion() + "'";
+        Statement statment = conexion.createStatement();
+        ResultSet result = statment.executeQuery(select);
+        boolean existe = false;
+        if (result.next()) {
+            existe = true;
+        }
+        result.close();
+        statment.close();
+        return existe;
+    }
     
     public boolean checkLogin(String u, String p) throws SQLException {
         String pass = "";
@@ -76,6 +84,7 @@ public class CollectorDao {
         return resultado;
     }
     
+    //Funcion para comprobar si existe un usurio en la bbdd con el mismo nombre.
     public boolean checkUsername(Usuario u) throws SQLException {
         String select = "select username from usuario o where o.username ='" + u.getUsername() + "'";
         Statement statment = conexion.createStatement();

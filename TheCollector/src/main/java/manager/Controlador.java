@@ -1,7 +1,9 @@
 package manager;
 
 import excepciones.Excepcion;
+import excepciones.Succestion;
 import java.sql.SQLException;
+import modelo.Pelicula;
 import modelo.Usuario;
 import persistencia.CollectorDao;
 
@@ -42,16 +44,30 @@ public class Controlador {
         return validado;
     }
     
-    public void validarRegistro(Usuario usu, String pass2) throws Excepcion, SQLException{
+    //Funcion para validar el registro de un usuario.
+    public void validarRegistro(Usuario usu, String pass2) throws Excepcion, SQLException, Succestion{
         if(usu.getUsername().equals("") || usu.getNombre().equals("") || usu.getApellidos().equals("") || usu.getPass().equals("") || pass2.equals("") || usu.getEmail().equals("")){
             throw new Excepcion(Excepcion.ERROR_EMPTY_FIELDS);
         }
         if(!usu.getPass().equals(pass2)){
             throw new Excepcion(Excepcion.ERROR_DIFFERENT_PASSWORDS);
         }
-        if(collectorDao.existeUsuario(usu.getUsername())){
+        if(collectorDao.checkUsername(usu)){
             throw new Excepcion(Excepcion.ERROR_USERNAME_NOT_AVAILABLE);
         }
         collectorDao.insertarUsuario(usu);
+        throw new Succestion(Succestion.USER_REGISTERED); 
+    }
+    
+    //Funcion para validar el registro de una pelicula.
+    public void validarPelicula(Pelicula p) throws Excepcion, SQLException, Succestion {
+        if(p.getDireccion().equals("") || p.getNombre().equals("")){
+            throw new Excepcion(Excepcion.ERROR_EMPTY_FIELDS);
+        }
+        if(collectorDao.checkPelicula(p)){
+            throw new Excepcion(Excepcion.ERROR_MOVIE_EXIST);
+        }
+        collectorDao.insertarPelicula(p);
+        throw new Succestion(Succestion.MOVIE_REGISTERED); 
     }
 }
