@@ -1,10 +1,13 @@
 package vista;
 
+import excepciones.AlertException;
 import excepciones.Excepcion;
 import excepciones.Succestion;
 import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import manager.Controlador;
 import modelo.Pelicula;
 import persistencia.CollectorDao;
@@ -17,8 +20,32 @@ public class RegistroPelicula extends javax.swing.JDialog {
     private int mousepX;
     private int mousepY;
     
+    private static List<String> generos = new ArrayList<>();
+    
     public RegistroPelicula() {
         initComponents();
+        actualizarComboBox();
+    }
+    
+    //Funcion que actualiza los datos de los generos.
+    public void actualizarComboBox(){
+        try {
+            generoComboBox.removeAllItems();
+            generoComboBox.addItem("Selecciona el genero");
+            generos = collectorDao.selectNombreGeneros();
+            if(!generos.isEmpty()){
+                for(int x=0; x<generos.size(); x++){
+                    String genero = generos.get(x);
+                    generoComboBox.addItem(genero);
+                }
+            }else{
+                throw new AlertException(AlertException.NO_EXISTEN_GENEROS);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }catch (AlertException ex) { 
+            mostrar.mostrar(ex);             
+        }
     }
 
     /**
@@ -235,10 +262,11 @@ public class RegistroPelicula extends javax.swing.JDialog {
             String nombre = nombrePelicula.getText();
             String direccion = director.getText();
             int duracion = Integer.parseInt(spinnerDuracion.getValue().toString());
-            int genero = generoComboBox.getSelectedIndex();
+            //int genero = generoComboBox.getSelectedIndex();
+            String generoNombre = (String) generoComboBox.getSelectedItem();
             
             try {
-                Pelicula peli = new Pelicula(direccion, duracion, nombre, genero);
+                Pelicula peli = new Pelicula(direccion, duracion, nombre, 1);
                 manager.validarPelicula(peli);
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());

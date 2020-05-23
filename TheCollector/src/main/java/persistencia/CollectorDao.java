@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import modelo.Pelicula;
 import modelo.Usuario;
 
@@ -24,6 +26,22 @@ public class CollectorDao {
             instance = new CollectorDao();
         }
         return instance;
+    }
+    
+    //Funcion que selecciona todos los nombres de los generos de la bbdd.
+    public List<String> selectNombreGeneros() throws SQLException {
+        String query = "select * from genero";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        List<String> generos = new ArrayList<>();
+        String nombre = null;
+        while (rs.next()) {
+            nombre = rs.getString("nombregenero");
+            generos.add(nombre);
+        }
+        rs.close();
+        st.close();
+        return generos;
     }
     
     //Funcion para insertar una pelicula en la bbdd.
