@@ -45,7 +45,7 @@ public class MainMenu extends javax.swing.JFrame {
         btnEliminar1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setAlwaysOnTop(true);
+        setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -230,6 +230,11 @@ public class MainMenu extends javax.swing.JFrame {
         btnCrear.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
         btnCrear.setText("Crear");
         btnCrear.setBorder(null);
+        btnCrear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearActionPerformed(evt);
+            }
+        });
 
         btnAnadir.setBackground(new java.awt.Color(255, 255, 255));
         btnAnadir.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
@@ -401,6 +406,27 @@ public class MainMenu extends javax.swing.JFrame {
     private void btnSeriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeriesActionPerformed
         lblTipo.setText("SERIES");
     }//GEN-LAST:event_btnSeriesActionPerformed
+
+    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
+        switch(lblTipo.getText()){
+            case "LIBROS":
+                RegistroLibro registroLibro = new RegistroLibro();
+                registroLibro.setLocationRelativeTo(null);
+                registroLibro.setVisible(true);
+                break;
+            case "VIDEOJUEGOS":
+                
+                break;
+            case "PELÍCULAS":
+                RegistroPelicula registroPelicula = new RegistroPelicula();
+                registroPelicula.setLocationRelativeTo(null);
+                registroPelicula.setVisible(true);
+                break;
+            case "SERIES":
+                
+                break;              
+        }
+    }//GEN-LAST:event_btnCrearActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

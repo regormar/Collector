@@ -3,6 +3,10 @@
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
+    <Property name="modalityType" type="java.awt.Dialog$ModalityType" editor="org.netbeans.modules.form.editors.EnumEditor">
+      <Value id="APPLICATION_MODAL"/>
+    </Property>
+    <Property name="undecorated" type="boolean" value="true"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -58,24 +62,24 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Component id="result" min="-2" pref="301" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="btnRegistrar" min="-2" pref="90" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="LabelGenero" min="-2" pref="149" max="-2" attributes="0"/>
-                              <Component id="LabelDirector" min="-2" pref="152" max="-2" attributes="0"/>
-                              <Component id="LabelNombre" min="-2" pref="166" max="-2" attributes="0"/>
-                              <Component id="LabelDuracion" alignment="0" min="-2" pref="149" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="LabelNumPags" alignment="0" pref="206" max="32767" attributes="0"/>
+                              <Component id="LabelAutor" alignment="0" max="32767" attributes="0"/>
+                              <Component id="LabelNombre" alignment="0" max="32767" attributes="0"/>
+                              <Component id="LabelGenero" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="87" max="32767" attributes="0"/>
+                          <EmptySpace pref="35" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="generoComboBox" max="32767" attributes="0"/>
-                              <Component id="spinnerDuracion" max="32767" attributes="0"/>
-                              <Component id="director" alignment="1" max="32767" attributes="0"/>
-                              <Component id="nombrePelicula" alignment="1" min="-2" pref="227" max="-2" attributes="0"/>
+                              <Component id="generoComboBox" alignment="1" max="32767" attributes="0"/>
+                              <Component id="spnNumPags" alignment="1" max="32767" attributes="0"/>
+                              <Component id="autor" alignment="1" max="32767" attributes="0"/>
+                              <Component id="nombreLibro" alignment="1" min="-2" pref="227" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -95,29 +99,35 @@
                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="LabelNombre" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="nombrePelicula" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                      <Component id="nombreLibro" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="LabelDirector" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="director" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                      <Component id="LabelAutor" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="autor" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="LabelDuracion" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="spinnerDuracion" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="LabelNumPags" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="spnNumPags" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="LabelGenero" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                       <Component id="generoComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="20" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnRegistrar" min="-2" pref="26" max="-2" attributes="0"/>
-                      <Component id="result" min="-2" pref="14" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <EmptySpace pref="13" max="32767" attributes="0"/>
+                          <Component id="result" min="-2" pref="14" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="btnRegistrar" min="-2" pref="26" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -131,7 +141,7 @@
             <Property name="text" type="java.lang.String" value="NOMBRE"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="nombrePelicula">
+        <Component class="javax.swing.JTextField" name="nombreLibro">
         </Component>
         <Component class="javax.swing.JButton" name="btnRegistrar">
           <Properties>
@@ -206,23 +216,23 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="LabelDirector">
+        <Component class="javax.swing.JLabel" name="LabelAutor">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tiza" size="11" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="DIRECTOR/A"/>
+            <Property name="text" type="java.lang.String" value="AUTOR"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="LabelDuracion">
+        <Component class="javax.swing.JLabel" name="LabelNumPags">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tiza" size="11" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="DURACION / MIN"/>
+            <Property name="text" type="java.lang.String" value="N&#xfa;mero de p&#xe1;ginas"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="director">
+        <Component class="javax.swing.JTextField" name="autor">
         </Component>
         <Container class="javax.swing.JPanel" name="PanelTitulo">
           <Properties>
@@ -263,7 +273,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="REGISTRO PELICULA"/>
+                <Property name="text" type="java.lang.String" value="REGISTRO LIBRO"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -274,13 +284,13 @@
             <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel5MousePressed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JSpinner" name="spinnerDuracion">
+        <Component class="javax.swing.JSpinner" name="spnNumPags">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Calibri" size="18" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-              <SpinnerModel initial="0.0" minimum="0.0" numberType="java.lang.Double" stepSize="1.0" type="number"/>
+              <SpinnerModel initial="0" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
             </Property>
           </Properties>
         </Component>

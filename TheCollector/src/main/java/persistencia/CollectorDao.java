@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import modelo.Libro;
 import modelo.Pelicula;
 import modelo.Usuario;
 
@@ -28,12 +29,26 @@ public class CollectorDao {
         return instance;
     }
     
-    //Funcion que selecciona todos los nombres de los generos de la bbdd.
-    public List<String> selectNombreGeneros() throws SQLException {
-        String query = "select * from genero";
+    public int getIdGeneroByName(String nombre) throws SQLException{
+        String select = "select idgenero from genero where nombregenero='" + nombre + "'";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(select);
+        int id = rs.getInt("idgenero");       
+        rs.close();
+        st.close();
+        return id;
+    }
+    
+    /*
+        0- Videojuegos
+        1- Peliculas, series y libros
+    */
+    //Funcion que selecciona los nombres de los generos de la bbdd segun su tipo.
+    public ArrayList<String> selectNombreGeneros(int tipo) throws SQLException {
+        String query = "select nombregenero from genero where tipogenero='" + tipo + "'";
         Statement st = conexion.createStatement();
         ResultSet rs = st.executeQuery(query);
-        List<String> generos = new ArrayList<>();
+        ArrayList<String> generos = new ArrayList<>();
         String nombre = null;
         while (rs.next()) {
             nombre = rs.getString("nombregenero");
@@ -44,7 +59,7 @@ public class CollectorDao {
         return generos;
     }
     
-    //Funcion para insertar una pelicula en la bbdd.
+        //Funcion para insertar una pelicula en la bbdd.
     public void insertarPelicula(Pelicula p) throws SQLException {
         String insert = "insert into pelicula values (?, ?, ?, ?, ?);";
         PreparedStatement ps = conexion.prepareStatement(insert);
@@ -53,6 +68,19 @@ public class CollectorDao {
         ps.setString(3, p.getDireccion());
         ps.setInt(4, p.getDuracion());
         ps.setInt(5, p.getGenero());
+        ps.executeUpdate();
+        ps.close();
+    }
+    
+    //Funcion para insertar un libro en la bbdd.
+    public void insertarLibro(Libro l) throws SQLException {
+        String insert = "insert into libro values (?, ?, ?, ?, ?);";
+        PreparedStatement ps = conexion.prepareStatement(insert);
+        ps.setString(1, null);
+        ps.setString(2, l.getNombre());
+        ps.setString(3, l.getAutor());
+        ps.setInt(4, l.getNumPaginas());
+        ps.setInt(5, l.getGenero());
         ps.executeUpdate();
         ps.close();
     }

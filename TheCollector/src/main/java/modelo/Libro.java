@@ -4,15 +4,15 @@ package modelo;
 public class Libro extends Miscelanea {
     
     private String autor;
-    private String numPaginas;
+    private int numPaginas;
     private int estado;
     private int paginaActual;
 
-    public Libro(String autor, String numPaginas, int estado, String nombre, int genero) {
+    public Libro(String autor, int numPaginas, String nombre, int genero) {
         super(nombre, genero);
         this.autor = autor;
         this.numPaginas = numPaginas;
-        this.estado = estado;
+        this.estado = 0;
     }   
     
     public int getPaginaActual() {
@@ -31,11 +31,11 @@ public class Libro extends Miscelanea {
         this.estado = estado;
     }
    
-    public String getNumPaginas() {
+    public int getNumPaginas() {
         return numPaginas;
     }
 
-    public void setNumPaginas(String numPaginas) {
+    public void setNumPaginas(int numPaginas) {
         this.numPaginas = numPaginas;
     }
     

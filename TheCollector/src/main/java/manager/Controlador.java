@@ -3,6 +3,7 @@ package manager;
 import excepciones.Excepcion;
 import excepciones.Succestion;
 import java.sql.SQLException;
+import modelo.Libro;
 import modelo.Pelicula;
 import modelo.Usuario;
 import persistencia.CollectorDao;
@@ -69,5 +70,12 @@ public class Controlador {
         }
         collectorDao.insertarPelicula(p);
         throw new Succestion(Succestion.MOVIE_REGISTERED); 
+    }
+    
+    public void validarLibro(Libro l) throws Excepcion, SQLException{
+        if(l.getAutor().equals("") || l.getNombre().equals("")){
+            throw new Excepcion(Excepcion.ERROR_EMPTY_FIELDS);
+        }
+        collectorDao.insertarLibro(l);
     }
 }

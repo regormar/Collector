@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Succestion extends Exception{
     
-    public static final int BOOK_ADDED = 0;
+    public static final int BOOK_REGISTERED = 0;
     public static final int USER_REGISTERED = 1;
     public static final int MOVIE_REGISTERED = 2;
     
