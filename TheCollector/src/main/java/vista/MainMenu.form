@@ -140,9 +140,9 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel5" min="-2" pref="210" max="-2" attributes="0"/>
-                          <Component id="jLabel1" min="-2" pref="250" max="-2" attributes="0"/>
+                          <Component id="jLabel1" min="-2" pref="262" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jSeparator3" min="-2" pref="2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnLibros" min="-2" pref="38" max="-2" attributes="0"/>
@@ -268,8 +268,9 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\ROGER\Documents\NetBeansProjects\Collector\TheCollector\src\main\java\assets\logofondo.png"/>
+                  <Image iconType="2" name="C:\Users\ROGER\Documents\NetBeansProjects\TheCollector\TheCollector\src\main\java\assets\imagen.png"/>
                 </Property>
               </Properties>
             </Component>

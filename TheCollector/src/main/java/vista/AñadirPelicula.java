@@ -141,7 +141,7 @@ public class AñadirPelicula extends javax.swing.JDialog {
 
         LabelAñadir.setFont(new java.awt.Font("Tiza", 0, 24)); // NOI18N
         LabelAñadir.setForeground(new java.awt.Color(255, 255, 255));
-        LabelAñadir.setText("AÑADIR PELICULA");
+        LabelAñadir.setText("ANADIR PELICULA");
 
         javax.swing.GroupLayout PanelTituloLayout = new javax.swing.GroupLayout(PanelTitulo);
         PanelTitulo.setLayout(PanelTituloLayout);
