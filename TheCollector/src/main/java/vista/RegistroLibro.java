@@ -257,6 +257,9 @@ public class RegistroLibro extends javax.swing.JDialog {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         try{
+            if(generoComboBox.getSelectedIndex() == 0){
+                throw new Excepcion(Excepcion.ERROR_UNSELECTED_GENRE);
+            }
             String nombre = nombreLibro.getText();
             String direccion = autor.getText();
             int numPags = Integer.parseInt(spnNumPags.getValue().toString());
@@ -269,10 +272,7 @@ public class RegistroLibro extends javax.swing.JDialog {
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
-            throw new Succestion(Succestion.BOOK_REGISTERED);
         } catch(Excepcion ex){
-            nombreLibro.setText("");
-            autor.setText("");
             spnNumPags.setValue(0);
             generoComboBox.setSelectedIndex(0);
             result.setText(ex.getMessage());

@@ -289,10 +289,10 @@ public class Login extends javax.swing.JDialog {
                 } 
                 if(manager.validarUsuario(usuario, pass)){
                     collectorDao.usuLogin(usuario);
+                    this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
                     MainMenu menu = new MainMenu();
                     menu.setLocationRelativeTo(null);
                     menu.setVisible(true);
-                    this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
                 }
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());

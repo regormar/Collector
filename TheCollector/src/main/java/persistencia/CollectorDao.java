@@ -203,6 +203,20 @@ public class CollectorDao {
     }
     
     //Funcion para comprobar si existe una pelicula en la bbdd con el mismo nombre y director.
+    public static boolean checkLibro(Libro l) throws SQLException {
+        String select = "select * from libro where nombrelibro ='" + l.getNombre() + "'and autor = '" + l.getAutor()+ "'";
+        Statement statment = conexion.createStatement();
+        ResultSet result = statment.executeQuery(select);
+        boolean existe = false;
+        if (result.next()) {
+            existe = true;
+        }
+        result.close();
+        statment.close();
+        return existe;
+    }
+    
+    //Funcion para comprobar si existe una pelicula en la bbdd con el mismo nombre y director.
     public static boolean checkPelicula(Pelicula p) throws SQLException {
         String select = "select * from pelicula where nombrepelicula ='" + p.getNombre() + "'and direccion = '" + p.getDireccion() + "'";
         Statement statment = conexion.createStatement();

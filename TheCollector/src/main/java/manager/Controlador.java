@@ -70,10 +70,15 @@ public class Controlador {
         throw new Succestion(Succestion.MOVIE_REGISTERED); 
     }
     
-    public static void validarLibro(Libro l) throws Excepcion, SQLException{
+    //Funcion para validar el registro de un libro.
+    public static void validarLibro(Libro l) throws Excepcion, SQLException, Succestion{
         if(l.getAutor().equals("") || l.getNombre().equals("")){
             throw new Excepcion(Excepcion.ERROR_EMPTY_FIELDS);
         }
+        if(CollectorDao.checkLibro(l)){
+            throw new Excepcion(Excepcion.ERROR_BOOK_EXIST);
+        }
         CollectorDao.insertarLibro(l);
+        throw new Succestion(Succestion.BOOK_REGISTERED);
     }
 }

@@ -15,6 +15,8 @@ public class Excepcion extends Exception {
     public static final int ERROR_MOVIE_EXIST = 6;
     public static final int GENERO_INVALIDO = 7;
     public static final int PELICULA_INVALIDA = 8;
+    public static final int ERROR_BOOK_EXIST = 9;
+     public static final int ERROR_UNSELECTED_GENRE = 10;
     
     private int code;
 
@@ -27,7 +29,9 @@ public class Excepcion extends Exception {
         "Login incorrecto",
         "Esta pelicula ya existe",          
         "Seleccion invalida: Seleccione un genero valido",          
-        "Seleccion invalida: Seleccione una pelicula valida"                     
+        "Seleccion invalida: Seleccione una pelicula valida",
+        "Este libro ya existe",
+        "Selecciona un género"
     );
 
     public Excepcion(int code) {
