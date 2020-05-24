@@ -21,13 +21,15 @@ public class AñadirPelicula extends javax.swing.JDialog {
     private static ArrayList<Pelicula> peliculas = new ArrayList<>();
     private static Pelicula peli;
     
-    public AñadirPelicula() {
+    public AñadirPelicula() throws AlertException {
         initComponents();
+        manager = Controlador.getInstace();
+        mostrar = MostrarExcepciones.getInstace();
         actualizarComboBox();
     }
     
     //Funcion que actualiza los datos de las peliculas.
-    public void actualizarComboBox(){
+    public void actualizarComboBox() throws AlertException{
         try {
             peliculaComboBox.removeAllItems();
             peliculaComboBox.addItem("Selecciona una pelicula:");
@@ -44,8 +46,6 @@ public class AñadirPelicula extends javax.swing.JDialog {
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-        }catch (AlertException ex) { 
-            mostrar.mostrar(ex);             
         }
     }
 
@@ -280,7 +280,7 @@ public class AñadirPelicula extends javax.swing.JDialog {
             peliculaComboBox.setSelectedIndex(0);
             result.setText(ex.getMessage());
         } catch(Succestion ex) {
-            //mostrar.mostrar(ex);
+            mostrar.mostrar(ex);
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
     }//GEN-LAST:event_btnAnyadirActionPerformed

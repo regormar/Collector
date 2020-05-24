@@ -20,13 +20,15 @@ public class EditarPelicula extends javax.swing.JDialog {
     private static ArrayList<Pelicula> peliculas = new ArrayList<>();
     private static Pelicula peli;
 
-    public EditarPelicula() {
+    public EditarPelicula() throws AlertException {
         initComponents();
+        manager = Controlador.getInstace();
+        mostrar = MostrarExcepciones.getInstace();
         actualizarComboBox();
     }
     
     //Funcion que actualiza los datos de las peliculas.
-    public void actualizarComboBox(){
+    public void actualizarComboBox() throws AlertException{
         try {
             peliculaComboBox.removeAllItems();
             peliculaComboBox.addItem("Selecciona una pelicula:");
@@ -38,13 +40,15 @@ public class EditarPelicula extends javax.swing.JDialog {
                         peliculaComboBox.addItem(pelicula.getNombre());
                     }
                 }
+                int total = peliculaComboBox.getItemCount();
+                if(total <= 1){
+                    throw new AlertException(AlertException.NO_TIENE_PELICULAS);
+                }
             }else{
                 throw new AlertException(AlertException.NO_EXISTEN_PELICULAS);
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-        }catch (AlertException ex) { 
-            mostrar.mostrar(ex);             
         }
     }
 
@@ -300,7 +304,7 @@ public class EditarPelicula extends javax.swing.JDialog {
             peliculaComboBox.setSelectedIndex(0);
             result.setText(ex.getMessage());
         } catch(Succestion ex) {
-            //mostrar.mostrar(ex);
+            mostrar.mostrar(ex);
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
     }//GEN-LAST:event_btnAnyadirActionPerformed

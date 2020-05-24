@@ -1,5 +1,6 @@
 package vista;
 
+import excepciones.AlertException;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import manager.Controlador;
@@ -7,11 +8,14 @@ import manager.Controlador;
 public class MainMenu extends javax.swing.JFrame {
     
     private static Controlador manager;
+    private static MostrarExcepciones mostrar;
     private int mousepX;
     private int mousepY;
 
     public MainMenu() {
         initComponents();
+        manager = Controlador.getInstace();
+        mostrar = MostrarExcepciones.getInstace();
         //Tipo 0 = admin
         if(manager.currentUser.getTipo() != 0){
             btnUsuario.setVisible(false);
@@ -474,80 +478,96 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSeriesActionPerformed
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
-        switch(lblTipo.getText()){
-            case "LIBROS":
-                RegistroLibro registroLibro = new RegistroLibro();
-                registroLibro.setLocationRelativeTo(null);
-                registroLibro.setVisible(true);
-                break;
-            case "VIDEOJUEGOS":
-                
-                break;
-            case "PELÍCULAS":
-                RegistroPelicula registroPelicula = new RegistroPelicula();
-                registroPelicula.setLocationRelativeTo(null);
-                registroPelicula.setVisible(true);
-                break;
-            case "SERIES":
-                
-                break;              
+        try {
+            switch(lblTipo.getText()){
+                case "LIBROS":
+                    RegistroLibro registroLibro = new RegistroLibro();
+                    registroLibro.setLocationRelativeTo(null);
+                    registroLibro.setVisible(true);
+                    break;
+                case "VIDEOJUEGOS":
+
+                    break;
+                case "PELÍCULAS":
+                    RegistroPelicula registroPelicula = new RegistroPelicula();
+                    registroPelicula.setLocationRelativeTo(null);
+                    registroPelicula.setVisible(true);
+                    break;
+                case "SERIES":
+
+                    break;              
+            }
+        }catch (AlertException ex) { 
+            mostrar.mostrar(ex);             
         }
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
-        switch(lblTipo.getText()){
-            case "LIBROS":
-                
-                break;
-            case "VIDEOJUEGOS":
-                
-                break;
-            case "PELÍCULAS":
-                AñadirPelicula añadirPelicula = new AñadirPelicula();
-                añadirPelicula.setLocationRelativeTo(null);
-                añadirPelicula.setVisible(true);
-                break;
-            case "SERIES":
-                
-                break;              
+        try {
+            switch(lblTipo.getText()){
+                case "LIBROS":
+
+                    break;
+                case "VIDEOJUEGOS":
+
+                    break;
+                case "PELÍCULAS":
+                    AñadirPelicula añadirPelicula = new AñadirPelicula();
+                    añadirPelicula.setLocationRelativeTo(null);
+                    añadirPelicula.setVisible(true);
+                    break;
+                case "SERIES":
+
+                    break;              
+            }
+        }catch (AlertException ex) { 
+            mostrar.mostrar(ex);             
         }
     }//GEN-LAST:event_btnAnadirActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        switch(lblTipo.getText()){
-            case "LIBROS":
-                
-                break;
-            case "VIDEOJUEGOS":
-                
-                break;
-            case "PELÍCULAS":
-                EliminarPelicula eliminarPelicula = new EliminarPelicula();
-                eliminarPelicula.setLocationRelativeTo(null);
-                eliminarPelicula.setVisible(true);
-                break;
-            case "SERIES":
-                
-                break;              
+        try {
+            switch(lblTipo.getText()){
+                case "LIBROS":
+
+                    break;
+                case "VIDEOJUEGOS":
+
+                    break;
+                case "PELÍCULAS":
+                    EliminarPelicula eliminarPelicula = new EliminarPelicula();
+                    eliminarPelicula.setLocationRelativeTo(null);
+                    eliminarPelicula.setVisible(true);
+                    break;
+                case "SERIES":
+
+                    break;              
+            }
+        }catch (AlertException ex) { 
+            mostrar.mostrar(ex);             
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        switch(lblTipo.getText()){
-            case "LIBROS":
-                
-                break;
-            case "VIDEOJUEGOS":
-                
-                break;
-            case "PELÍCULAS":
-                EditarPelicula editarPelicula = new EditarPelicula();
-                editarPelicula.setLocationRelativeTo(null);
-                editarPelicula.setVisible(true);
-                break;
-            case "SERIES":
-                
-                break;              
+        try {
+            switch(lblTipo.getText()){
+                case "LIBROS":
+
+                    break;
+                case "VIDEOJUEGOS":
+
+                    break;
+                case "PELÍCULAS":
+                    EditarPelicula editarPelicula = new EditarPelicula();
+                    editarPelicula.setLocationRelativeTo(null);
+                    editarPelicula.setVisible(true);
+                    break;
+                case "SERIES":
+
+                    break;              
+            }
+        }catch (AlertException ex) { 
+            mostrar.mostrar(ex);             
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 

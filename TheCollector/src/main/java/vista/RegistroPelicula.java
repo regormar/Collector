@@ -19,13 +19,15 @@ public class RegistroPelicula extends javax.swing.JDialog {
     private int mousepX;
     private int mousepY;
     
-    public RegistroPelicula() {
+    public RegistroPelicula() throws AlertException {
         initComponents();
+        manager = Controlador.getInstace();
+        mostrar = MostrarExcepciones.getInstace();
         actualizarComboBox();
     }
     
     //Funcion que actualiza los datos de los generos.
-    public void actualizarComboBox(){
+    public void actualizarComboBox() throws AlertException{
         try {
             generoComboBox.removeAllItems();
             generoComboBox.addItem("Selecciona el genero:");
@@ -39,8 +41,6 @@ public class RegistroPelicula extends javax.swing.JDialog {
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-        }catch (AlertException ex) { 
-            mostrar.mostrar(ex);             
         }
     }
 
@@ -279,7 +279,7 @@ public class RegistroPelicula extends javax.swing.JDialog {
             generoComboBox.setSelectedIndex(0);
             result.setText(ex.getMessage());
         } catch(Succestion ex) {
-            //mostrar.mostrar(ex);  
+            mostrar.mostrar(ex);  
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING)); 
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
