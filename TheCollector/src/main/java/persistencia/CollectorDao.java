@@ -44,7 +44,19 @@ public class CollectorDao {
         st.close();
     }
     
-    
+    //Función que devuelve el número de libros que tiene un usuario.
+    public static int getNumBooksByUser() throws SQLException {
+        String select = "select count(username) as veces from librousuario where username ='" + usuActual + "'";
+        int veces = 0;
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(select);
+        if (rs.next()) {
+            veces = rs.getInt("veces");
+        }
+        rs.close() ;
+        st.close();
+        return veces;
+    }
     
     //Funcion que selecciona la id de una pelicula segun su nombre.
     public static int getIdPeliculaByName(String nombre, String director) throws SQLException {
@@ -127,6 +139,26 @@ public class CollectorDao {
         return activity;
     }
     
+    //Funcion que selecciona todos los libros registrados en la bbdd.
+    public static ArrayList<Libro> selectLibros() throws SQLException {
+        String query = "select * from libro";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        ArrayList<Libro> activity = new ArrayList<>();
+        while (rs.next()) {
+            Libro l = new Libro();
+            l.setId(rs.getInt("idlibro"));
+            l.setNombre(rs.getString("nombrelibro"));
+            l.setAutor(rs.getString("autor"));
+            l.setNumPaginas(rs.getInt("numpaginas"));
+            l.setGenero(rs.getInt("idgenero"));
+            activity.add(l);
+        }
+        rs.close();
+        st.close();
+        return activity;
+    }
+    
     //Funcion para insertar una pelicula en la bbdd.
     public static void insertarPeliculaUsuario(Pelicula p, int id) throws SQLException {
         String insert = "insert into peliculausuario values (?, ?, ?, ?);";
@@ -135,6 +167,18 @@ public class CollectorDao {
         ps.setInt(2, id);
         ps.setInt(3, p.getMinuto());
         ps.setInt(4, p.getValoracion());
+        ps.executeUpdate();
+        ps.close();
+    }
+    
+    //Funcion para insertar una pelicula en la bbdd.
+    public static void insertarLibroUsuario(Libro l) throws SQLException {
+        String insert = "insert into librousuario values (?, ?, ?, ?);";
+        PreparedStatement ps = conexion.prepareStatement(insert);
+        ps.setString(1, usuActual);
+        ps.setInt(2, l.getId());
+        ps.setInt(3, l.getPaginaActual());
+        ps.setInt(4, l.getValoracion());
         ps.executeUpdate();
         ps.close();
     }
@@ -191,6 +235,20 @@ public class CollectorDao {
     //Funcion para comprobar si el usuario tiene una pelicula.
     public static boolean checkPeliculaUsuario(int id) throws SQLException {
         String select = "select * from peliculausuario where username ='" + usuActual + "'and idpelicula = '" + id + "'";
+        Statement statment = conexion.createStatement();
+        ResultSet result = statment.executeQuery(select);
+        boolean existe = false;
+        if (result.next()) {
+            existe = true;
+        }
+        result.close();
+        statment.close();
+        return existe;
+    }
+    
+    //Funcion para comprobar si el usuario tiene un libro.
+    public static boolean checkLibroUsuario(int id) throws SQLException {
+        String select = "select * from librousuario where username ='" + usuActual + "'and idlibro = '" + id + "'";
         Statement statment = conexion.createStatement();
         ResultSet result = statment.executeQuery(select);
         boolean existe = false;

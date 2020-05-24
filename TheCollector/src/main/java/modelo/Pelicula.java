@@ -8,11 +8,14 @@ public class Pelicula extends Miscelanea{
     private int minuto;
     private int valoracion;
 
+    public Pelicula(){    
+    }
+    
     public Pelicula(String direccion, int duracion, String nombre, int genero) {
         super(nombre, genero);
         this.direccion = direccion;
         this.duracion = duracion;
-    }
+    }   
     
     public int getMinuto() {
         return minuto;

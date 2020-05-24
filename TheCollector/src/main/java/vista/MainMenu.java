@@ -506,7 +506,9 @@ public class MainMenu extends javax.swing.JFrame {
         try {
             switch(lblTipo.getText()){
                 case "LIBROS":
-
+                    AñadirLibro añadirLibro = new AñadirLibro();
+                    añadirLibro.setLocationRelativeTo(null);
+                    añadirLibro.setVisible(true);
                     break;
                 case "VIDEOJUEGOS":
 

@@ -4,18 +4,20 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AlertException extends Exception{
-        public static final int BOOKS_NOT_FOUND = 0;
-        public static final int NO_EXISTEN_GENEROS = 1;
-        public static final int NO_EXISTEN_PELICULAS = 2;
-        public static final int NO_TIENE_PELICULAS = 3;
+        public static final int NO_EXISTEN_GENEROS = 0;
+        public static final int NO_EXISTEN_PELICULAS = 1;
+        public static final int NO_TIENE_PELICULAS = 2;
+        public static final int NO_EXISTEN_LIBROS = 3;
+        public static final int NO_EXISTEN_MAS_LIBROS = 4;
 
     private int code;
 
     private final List<String> MESSAGES = Arrays.asList(
-        "No hay libros registrados",
-        "No existen generos",
-        "No existen peliculas",
-        "No tienes películas añadidas"
+        "No existen géneros",
+        "No existen películas",
+        "No tienes películas añadidas",
+        "No existen libros",
+        "No existen más libros para añadir"
     );
 
     public AlertException(int code) {

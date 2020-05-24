@@ -16,7 +16,9 @@ public class Excepcion extends Exception {
     public static final int GENERO_INVALIDO = 7;
     public static final int PELICULA_INVALIDA = 8;
     public static final int ERROR_BOOK_EXIST = 9;
-     public static final int ERROR_UNSELECTED_GENRE = 10;
+    public static final int ERROR_UNSELECTED_GENRE = 10;
+    public static final int BOOK_INVALIDO = 11;
+    public static final int INVALID_PAGE_NUMBER = 12;
     
     private int code;
 
@@ -27,11 +29,13 @@ public class Excepcion extends Exception {
         "Las contraseñas no coinciden",
         "El nombre de usuario no esta disponible",
         "Login incorrecto",
-        "Esta pelicula ya existe",          
-        "Seleccion invalida: Seleccione un genero valido",          
-        "Seleccion invalida: Seleccione una pelicula valida",
+        "Esta película ya existe",          
+        "Seleccion invalida: Seleccione un género válido",          
+        "Seleccion invalida: Seleccione una película válida",
         "Este libro ya existe",
-        "Selecciona un género"
+        "Selecciona un género",
+        "Seleccion invalida: Seleccione un libro válido",
+        "El número de página no puede ser superior al total"
     );
 
     public Excepcion(int code) {

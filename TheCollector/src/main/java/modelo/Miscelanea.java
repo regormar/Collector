@@ -13,6 +13,9 @@ public abstract class Miscelanea {
         this.genero = genero;
     }
 
+    public Miscelanea(){       
+    }
+    
     public int getValoracion() {
         return valoracion;
     }
