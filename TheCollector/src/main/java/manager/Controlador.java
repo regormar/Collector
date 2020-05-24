@@ -13,12 +13,10 @@ public class Controlador {
     
     private static Controlador instance;
     public static Usuario currentUser;
-    public static CollectorDao collectorDao;
         
     public static void conectarBBDD(){
-        collectorDao = CollectorDao.getInstace();
         try {
-            collectorDao.conectar();
+            CollectorDao.conectar();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -33,11 +31,11 @@ public class Controlador {
     
     public static boolean validarUsuario(String u, String p) throws SQLException, Excepcion{
         boolean validado = false;
-        if(!collectorDao.checkLogin(u, p)){
+        if(!CollectorDao.checkLogin(u, p)){
             throw new Excepcion(Excepcion.ERROR_LOGIN_INCORRECTO); 
         }
-        if(collectorDao.checkLogin(u, p)){
-            currentUser = collectorDao.getUser(u);
+        if(CollectorDao.checkLogin(u, p)){
+            currentUser = CollectorDao.getUser(u);
             validado = true;
         } else{
             
@@ -53,10 +51,10 @@ public class Controlador {
         if(!usu.getPass().equals(pass2)){
             throw new Excepcion(Excepcion.ERROR_DIFFERENT_PASSWORDS);
         }
-        if(collectorDao.checkUsername(usu)){
+        if(CollectorDao.checkUsername(usu)){
             throw new Excepcion(Excepcion.ERROR_USERNAME_NOT_AVAILABLE);
         }
-        collectorDao.insertarUsuario(usu);
+        CollectorDao.insertarUsuario(usu);
         throw new Succestion(Succestion.USER_REGISTERED); 
     }
     
@@ -65,17 +63,17 @@ public class Controlador {
         if(p.getDireccion().equals("") || p.getNombre().equals("")){
             throw new Excepcion(Excepcion.ERROR_EMPTY_FIELDS);
         }
-        if(collectorDao.checkPelicula(p)){
+        if(CollectorDao.checkPelicula(p)){
             throw new Excepcion(Excepcion.ERROR_MOVIE_EXIST);
         }
-        collectorDao.insertarPelicula(p);
-        throw new Succestion(Succestion.USER_REGISTERED); 
+        CollectorDao.insertarPelicula(p);
+        throw new Succestion(Succestion.MOVIE_REGISTERED); 
     }
     
     public static void validarLibro(Libro l) throws Excepcion, SQLException{
         if(l.getAutor().equals("") || l.getNombre().equals("")){
             throw new Excepcion(Excepcion.ERROR_EMPTY_FIELDS);
         }
-        collectorDao.insertarLibro(l);
+        CollectorDao.insertarLibro(l);
     }
 }

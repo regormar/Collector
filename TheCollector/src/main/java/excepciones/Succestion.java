@@ -9,8 +9,8 @@ public class Succestion extends Exception{
     public static final int BOOK_REGISTERED = 0;
     public static final int USER_REGISTERED = 1;
     public static final int MOVIE_REGISTERED = 2;
-    public static final int MOVIE_ADDED= 3;
-    public static final int MOVIE_REMOVED= 4;
+    public static final int MOVIE_ADDED = 3;
+    public static final int MOVIE_REMOVED = 4;
     
     private int code;
 

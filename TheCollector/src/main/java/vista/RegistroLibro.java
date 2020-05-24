@@ -45,7 +45,7 @@ public final class RegistroLibro extends javax.swing.JDialog {
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-        }catch (AlertException ex) { 
+        }catch (AlertException ex) {            
             mostrar.mostrar(ex);             
         }
     }
@@ -281,7 +281,7 @@ public final class RegistroLibro extends javax.swing.JDialog {
             generoComboBox.setSelectedIndex(0);
             result.setText(ex.getMessage());
         } catch (Succestion ex) {
-            mostrar.mostrar(ex);
+            //mostrar.mostrar(ex);
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
