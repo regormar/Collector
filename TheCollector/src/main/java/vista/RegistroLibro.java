@@ -7,17 +7,13 @@ import excepciones.Succestion;
 import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import manager.Controlador;
 import modelo.Libro;
 import persistencia.CollectorDao;
-import static vista.RegistroPelicula.collectorDao;
 
 
-public final class RegistroLibro extends javax.swing.JDialog {
+public class RegistroLibro extends javax.swing.JDialog {
     
     private static Controlador manager;
     private static MostrarExcepciones mostrar;
@@ -267,7 +263,7 @@ public final class RegistroLibro extends javax.swing.JDialog {
             //int genero = generoComboBox.getSelectedIndex();
             String genero = (String) generoComboBox.getSelectedItem();
             try {
-                int id = collectorDao.getIdGeneroByName(nombre);
+                int id = collectorDao.getIdGeneroByName(genero);
                 Libro libro = new Libro(direccion, numPags, nombre, id);
                 manager.validarLibro(libro);
             } catch (SQLException ex) {

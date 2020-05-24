@@ -59,19 +59,7 @@ public class CollectorDao {
         st.close();
         return id;
     }
-    
-    /*
-    public static int getIdGeneroByName(String nombre) throws SQLException{
-        String select = "select idgenero from genero where nombregenero='" + nombre + "'";
-        Statement st = conexion.createStatement();
-        ResultSet rs = st.executeQuery(select);
-        int id = rs.getInt("idgenero");       
-        rs.close();
-        st.close();
-        return id;
-    }
-    */
-    
+
     //Funcion que selecciona la id de un genero segun su nombre.
     public static int getIdGeneroByName(String nombre) throws SQLException {
         String select = "select idgenero from genero where nombregenero ='" + nombre + "'";
