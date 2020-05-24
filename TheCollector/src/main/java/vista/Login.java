@@ -5,12 +5,14 @@ import manager.Controlador;
 import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import persistencia.CollectorDao;
 
 
 public class Login extends javax.swing.JDialog {
 
     private static Controlador manager;
     private static MostrarExcepciones mostrar;
+    public static CollectorDao collectorDao;
     private int mousepX;
     private int mousepY;
     
@@ -286,6 +288,7 @@ public class Login extends javax.swing.JDialog {
                     throw new Excepcion(Excepcion.ERROR_EMPTY_FIELDS);
                 } 
                 if(manager.validarUsuario(usuario, pass)){
+                    collectorDao.usuLogin(usuario);
                     MainMenu menu = new MainMenu();
                     menu.setLocationRelativeTo(null);
                     menu.setVisible(true);

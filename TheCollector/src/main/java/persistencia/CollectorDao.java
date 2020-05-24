@@ -19,8 +19,10 @@ import modelo.Usuario;
  */
 public class CollectorDao {
     
-    Connection conexion;
+    public static Connection conexion;
     private static CollectorDao instance;
+    private static String usuActual;
+    private static int IdUsuActual;
     
     public static CollectorDao getInstace() {
         if (instance == null) {
@@ -29,12 +31,57 @@ public class CollectorDao {
         return instance;
     }
     
-    public int getIdGeneroByName(String nombre) throws SQLException{
+    //Funcion para guardar la id del usuario actual.
+    public static void usuLogin(String usu) throws SQLException{
+        usuActual = usu;
+        String select = "select idusuario from usuario where username ='" + usu + "'";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(select);
+        if (rs.next()) {
+            IdUsuActual = rs.getInt("idusuario");
+        }
+        rs.close() ;
+        st.close();
+    }
+    
+    
+    
+    //Funcion que selecciona la id de una pelicula segun su nombre.
+    public static int getIdPeliculaByName(String nombre, String director) throws SQLException {
+        String select = "select idpelicula from pelicula where nombrepelicula ='" + nombre + "' and direccion = '" + director + "'";
+        int id = 0;
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(select);
+        if (rs.next()) {
+            id = rs.getInt("idpelicula");
+        }
+        rs.close() ;
+        st.close();
+        return id;
+    }
+    
+    /*
+    public static int getIdGeneroByName(String nombre) throws SQLException{
         String select = "select idgenero from genero where nombregenero='" + nombre + "'";
         Statement st = conexion.createStatement();
         ResultSet rs = st.executeQuery(select);
         int id = rs.getInt("idgenero");       
         rs.close();
+        st.close();
+        return id;
+    }
+    */
+    
+    //Funcion que selecciona la id de un genero segun su nombre.
+    public static int getIdGeneroByName(String nombre) throws SQLException {
+        String select = "select idgenero from genero where nombregenero ='" + nombre + "'";
+        int id = 0;
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(select);
+        if (rs.next()) {
+            id = rs.getInt("idgenero");
+        }
+        rs.close() ;
         st.close();
         return id;
     }
@@ -44,11 +91,11 @@ public class CollectorDao {
         1- Peliculas, series y libros
     */
     //Funcion que selecciona los nombres de los generos de la bbdd segun su tipo.
-    public ArrayList<String> selectNombreGeneros(int tipo) throws SQLException {
+    public static List<String> selectNombreGeneros(int tipo) throws SQLException {
         String query = "select nombregenero from genero where tipogenero='" + tipo + "'";
         Statement st = conexion.createStatement();
         ResultSet rs = st.executeQuery(query);
-        ArrayList<String> generos = new ArrayList<>();
+        List<String> generos = new ArrayList<>();
         String nombre = null;
         while (rs.next()) {
             nombre = rs.getString("nombregenero");
@@ -59,8 +106,53 @@ public class CollectorDao {
         return generos;
     }
     
-        //Funcion para insertar una pelicula en la bbdd.
-    public void insertarPelicula(Pelicula p) throws SQLException {
+    //Funcion que selecciona los datos de la pelicula del usuario.
+    public static Pelicula selectPeliculaUsuario(Pelicula peli, int id) throws SQLException {
+        String query = "select * from peliculausuario where username='" + usuActual + "' and idpelicula = '" + id + "'";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        while (rs.next()) {
+            peli.setMinuto(rs.getInt("minuto"));
+            peli.setValoracion(rs.getInt("valoracion"));
+        }
+        rs.close();
+        st.close();
+        return peli;
+    }
+    
+    //Funcion que selecciona todas las peliculas registradas en la bbdd.
+    public static ArrayList<Pelicula> selectPeliculas() throws SQLException {
+        String query = "select * from pelicula";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        ArrayList<Pelicula> activity = new ArrayList<>();
+        while (rs.next()) {
+            Pelicula p = new Pelicula(null, 0, null, 0);
+            p.setDireccion(rs.getString("direccion"));
+            p.setDuracion(rs.getInt("duracion"));
+            p.setNombre(rs.getString("nombrepelicula"));
+            p.setGenero(rs.getInt("idgenero"));
+            activity.add(p);
+        }
+        rs.close();
+        st.close();
+        return activity;
+    }
+    
+    //Funcion para insertar una pelicula en la bbdd.
+    public static void insertarPeliculaUsuario(Pelicula p, int id) throws SQLException {
+        String insert = "insert into peliculausuario values (?, ?, ?, ?);";
+        PreparedStatement ps = conexion.prepareStatement(insert);
+        ps.setString(1, usuActual);
+        ps.setInt(2, id);
+        ps.setInt(3, p.getMinuto());
+        ps.setInt(4, p.getValoracion());
+        ps.executeUpdate();
+        ps.close();
+    }
+    
+    //Funcion para insertar una pelicula en la bbdd.
+    public static void insertarPelicula(Pelicula p) throws SQLException {
         String insert = "insert into pelicula values (?, ?, ?, ?, ?);";
         PreparedStatement ps = conexion.prepareStatement(insert);
         ps.setString(1, null);
@@ -73,7 +165,7 @@ public class CollectorDao {
     }
     
     //Funcion para insertar un libro en la bbdd.
-    public void insertarLibro(Libro l) throws SQLException {
+    public static void insertarLibro(Libro l) throws SQLException {
         String insert = "insert into libro values (?, ?, ?, ?, ?);";
         PreparedStatement ps = conexion.prepareStatement(insert);
         ps.setString(1, null);
@@ -86,7 +178,7 @@ public class CollectorDao {
     }
     
     //Funcion para insertar un usuario en la bbdd.
-    public void insertarUsuario(Usuario usu) throws SQLException {
+    public static void insertarUsuario(Usuario usu) throws SQLException {
         String insert = "insert into usuario values (?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement ps = conexion.prepareStatement(insert);
         ps.setString(1, null);
@@ -100,9 +192,17 @@ public class CollectorDao {
         ps.close();
     }
     
-    //Funcion para comprobar si existe una pelicula en la bbdd con el mismo nombre y director.
-    public boolean checkPelicula(Pelicula p) throws SQLException {
-        String select = "select * from pelicula where username ='" + p.getNombre() + "'and direccion = '" + p.getDireccion() + "'";
+    // Función que borra una pelicula.
+    public static void eliminarPeliculaUsuario(int id) throws SQLException {
+        String delete = "delete from peliculausuario where username='" + usuActual + "' and idpelicula = '" + id + "'";
+        Statement st = conexion.createStatement();
+        st.executeUpdate(delete);
+        st.close();
+    }
+
+    //Funcion para comprobar si el usuario tiene una pelicula.
+    public static boolean checkPeliculaUsuario(int id) throws SQLException {
+        String select = "select * from peliculausuario where username ='" + usuActual + "'and idpelicula = '" + id + "'";
         Statement statment = conexion.createStatement();
         ResultSet result = statment.executeQuery(select);
         boolean existe = false;
@@ -114,7 +214,21 @@ public class CollectorDao {
         return existe;
     }
     
-    public boolean checkLogin(String u, String p) throws SQLException {
+    //Funcion para comprobar si existe una pelicula en la bbdd con el mismo nombre y director.
+    public static boolean checkPelicula(Pelicula p) throws SQLException {
+        String select = "select * from pelicula where nombrepelicula ='" + p.getNombre() + "'and direccion = '" + p.getDireccion() + "'";
+        Statement statment = conexion.createStatement();
+        ResultSet result = statment.executeQuery(select);
+        boolean existe = false;
+        if (result.next()) {
+            existe = true;
+        }
+        result.close();
+        statment.close();
+        return existe;
+    }
+    
+    public static boolean checkLogin(String u, String p) throws SQLException {
         String pass = "";
         boolean resultado = false;
         String select = "select username,pass from usuario o where o.username ='" + u + "' and o.pass = '" + p + "'";
@@ -131,7 +245,7 @@ public class CollectorDao {
     }
     
     //Funcion para comprobar si existe un usurio en la bbdd con el mismo nombre.
-    public boolean checkUsername(Usuario u) throws SQLException {
+    public static boolean checkUsername(Usuario u) throws SQLException {
         String select = "select username from usuario o where o.username ='" + u.getUsername() + "'";
         Statement statment = conexion.createStatement();
         ResultSet result = statment.executeQuery(select);
@@ -144,7 +258,7 @@ public class CollectorDao {
         return existe;
     }
     
-    public Usuario getUser(String nombre) throws SQLException, Excepcion {
+    public static Usuario getUser(String nombre) throws SQLException, Excepcion {
         String select = "select * from usuario where username='" + nombre + "'";
         Statement st = conexion.createStatement();
         ResultSet rs = st.executeQuery(select);
@@ -168,7 +282,7 @@ public class CollectorDao {
     *
     * @throws SQLException
     */
-    public void conectar() throws SQLException { 
+    public static void conectar() throws SQLException { 
         String url = "jdbc:mysql://localhost:3306/thecollector?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
         String user = "root";
         String pass = "";
@@ -180,7 +294,7 @@ public class CollectorDao {
      *
      * @throws SQLException
      */
-    public void desconectar() throws SQLException {
+    public static void desconectar() throws SQLException {
         if (conexion != null) {
             conexion.close();
         }

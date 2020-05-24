@@ -1,3 +1,4 @@
+
 package vista;
 
 import excepciones.AlertException;
@@ -6,36 +7,41 @@ import excepciones.Succestion;
 import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.ArrayList;
 import manager.Controlador;
 import modelo.Pelicula;
 import persistencia.CollectorDao;
 
-public class RegistroPelicula extends javax.swing.JDialog {
+public class EliminarPelicula extends javax.swing.JDialog {
 
     private static Controlador manager;
     private static MostrarExcepciones mostrar;
     public static CollectorDao collectorDao;
     private int mousepX;
     private int mousepY;
+    private static ArrayList<Pelicula> peliculas = new ArrayList<>();
+    private static Pelicula peli;
     
-    public RegistroPelicula() {
+    public EliminarPelicula() {
         initComponents();
         actualizarComboBox();
     }
     
-    //Funcion que actualiza los datos de los generos.
+    //Funcion que actualiza los datos de las peliculas.
     public void actualizarComboBox(){
         try {
-            generoComboBox.removeAllItems();
-            generoComboBox.addItem("Selecciona el genero:");
-            List<String> generos = collectorDao.selectNombreGeneros(1);
-            if(!generos.isEmpty()){
-                for(String genero : generos){
-                    generoComboBox.addItem(genero);
+            peliculaComboBox.removeAllItems();
+            peliculaComboBox.addItem("Selecciona una pelicula:");
+            peliculas = collectorDao.selectPeliculas();
+            if(!peliculas.isEmpty()){
+                for(Pelicula pelicula : peliculas){
+                    int id = collectorDao.getIdPeliculaByName(pelicula.getNombre(), pelicula.getDireccion());
+                    if(collectorDao.checkPeliculaUsuario(id)){
+                        peliculaComboBox.addItem(pelicula.getNombre());
+                    }
                 }
             }else{
-                throw new AlertException(AlertException.NO_EXISTEN_GENEROS);
+                throw new AlertException(AlertException.NO_EXISTEN_PELICULAS);
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -54,38 +60,32 @@ public class RegistroPelicula extends javax.swing.JDialog {
     private void initComponents() {
 
         PanelFondo = new javax.swing.JPanel();
-        LabelNombre = new javax.swing.JLabel();
-        nombrePelicula = new javax.swing.JTextField();
-        btnRegistrar = new javax.swing.JButton();
+        LabelPelicula = new javax.swing.JLabel();
+        btnEliminar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         tfCerrar = new javax.swing.JLabel();
         result = new javax.swing.JLabel();
-        LabelDirector = new javax.swing.JLabel();
-        LabelDuracion = new javax.swing.JLabel();
-        director = new javax.swing.JTextField();
         PanelTitulo = new javax.swing.JPanel();
-        LabelRegistro = new javax.swing.JLabel();
+        LabelEliminar = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        LabelGenero = new javax.swing.JLabel();
-        generoComboBox = new javax.swing.JComboBox<>();
-        spinnerDuracion = new javax.swing.JSpinner();
+        peliculaComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         PanelFondo.setBackground(new java.awt.Color(255, 255, 255));
         PanelFondo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        LabelNombre.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        LabelNombre.setText("NOMBRE");
+        LabelPelicula.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
+        LabelPelicula.setText("PELICULA");
 
-        btnRegistrar.setBackground(new java.awt.Color(51, 51, 51));
-        btnRegistrar.setFont(new java.awt.Font("Tiza", 0, 8)); // NOI18N
-        btnRegistrar.setForeground(new java.awt.Color(255, 255, 255));
-        btnRegistrar.setText("REGISTRAR");
-        btnRegistrar.setBorder(null);
-        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminar.setBackground(new java.awt.Color(51, 51, 51));
+        btnEliminar.setFont(new java.awt.Font("Tiza", 0, 8)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminar.setText("ELIMINAR");
+        btnEliminar.setBorder(null);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistrarActionPerformed(evt);
+                btnEliminarActionPerformed(evt);
             }
         });
 
@@ -127,18 +127,12 @@ public class RegistroPelicula extends javax.swing.JDialog {
 
         result.setForeground(new java.awt.Color(255, 0, 0));
 
-        LabelDirector.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        LabelDirector.setText("DIRECTOR/A");
-
-        LabelDuracion.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        LabelDuracion.setText("DURACION / MIN");
-
         PanelTitulo.setBackground(new java.awt.Color(51, 51, 51));
         PanelTitulo.setForeground(new java.awt.Color(51, 51, 51));
 
-        LabelRegistro.setFont(new java.awt.Font("Tiza", 0, 24)); // NOI18N
-        LabelRegistro.setForeground(new java.awt.Color(255, 255, 255));
-        LabelRegistro.setText("REGISTRO PELICULA");
+        LabelEliminar.setFont(new java.awt.Font("Tiza", 0, 24)); // NOI18N
+        LabelEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        LabelEliminar.setText("ELIMINAR PELICULA");
 
         javax.swing.GroupLayout PanelTituloLayout = new javax.swing.GroupLayout(PanelTitulo);
         PanelTitulo.setLayout(PanelTituloLayout);
@@ -146,14 +140,14 @@ public class RegistroPelicula extends javax.swing.JDialog {
             PanelTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTituloLayout.createSequentialGroup()
                 .addGap(56, 56, 56)
-                .addComponent(LabelRegistro)
+                .addComponent(LabelEliminar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         PanelTituloLayout.setVerticalGroup(
             PanelTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTituloLayout.createSequentialGroup()
                 .addContainerGap(30, Short.MAX_VALUE)
-                .addComponent(LabelRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(LabelEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
         );
 
@@ -168,13 +162,7 @@ public class RegistroPelicula extends javax.swing.JDialog {
             }
         });
 
-        LabelGenero.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        LabelGenero.setText("GENERO");
-
-        generoComboBox.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-
-        spinnerDuracion.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        spinnerDuracion.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        peliculaComboBox.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout PanelFondoLayout = new javax.swing.GroupLayout(PanelFondo);
         PanelFondo.setLayout(PanelFondoLayout);
@@ -192,22 +180,13 @@ public class RegistroPelicula extends javax.swing.JDialog {
                     .addGroup(PanelFondoLayout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(PanelFondoLayout.createSequentialGroup()
-                        .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LabelGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LabelDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LabelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LabelDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(generoComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(director)
-                            .addComponent(nombrePelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(spinnerDuracion))))
-                .addGap(70, 70, 70))
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PanelFondoLayout.createSequentialGroup()
+                        .addComponent(LabelPelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(peliculaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(64, 64, 64))
         );
         PanelFondoLayout.setVerticalGroup(
             PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,25 +196,13 @@ public class RegistroPelicula extends javax.swing.JDialog {
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PanelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGap(26, 26, 26)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nombrePelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(director, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(spinnerDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(generoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                    .addComponent(LabelPelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(peliculaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27))
         );
@@ -244,7 +211,7 @@ public class RegistroPelicula extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PanelFondo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(PanelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,41 +221,40 @@ public class RegistroPelicula extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         try{
-            String nombre = nombrePelicula.getText();
-            String direccion = director.getText();
-            int duracion = Integer.parseInt(spinnerDuracion.getValue().toString());
-            int genero = generoComboBox.getSelectedIndex();
-            if(genero == 0){
-                throw new Excepcion(Excepcion.GENERO_INVALIDO);
+            int pelicula = peliculaComboBox.getSelectedIndex();
+            if(pelicula == 0){
+                throw new Excepcion(Excepcion.PELICULA_INVALIDA);
             }
-            String generoNombre = (String) generoComboBox.getSelectedItem();
+            String peliculaNombre = (String) peliculaComboBox.getSelectedItem();
+            for(int x=0; x<peliculas.size(); x++){
+                if(peliculaNombre.equals(peliculas.get(x).getNombre())){
+                    peli = peliculas.get(x);
+                }
+            }
             try {
-                int idGenero = collectorDao.getIdGeneroByName(generoNombre);
-                Pelicula peli = new Pelicula(direccion, duracion, nombre, idGenero);
-                manager.validarPelicula(peli);
+                int idPelicula = collectorDao.getIdPeliculaByName(peliculaNombre, peli.getDireccion());
+                collectorDao.eliminarPeliculaUsuario(idPelicula);
+                throw new Succestion(Succestion.MOVIE_REMOVED);
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
         } catch(Excepcion ex){
-            nombrePelicula.setText("");
-            director.setText("");
-            spinnerDuracion.setValue(0);
-            generoComboBox.setSelectedIndex(0);
+            peliculaComboBox.setSelectedIndex(0);
             result.setText(ex.getMessage());
         } catch(Succestion ex) {
-            //mostrar.mostrar(ex);  
-            this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING)); 
+            //mostrar.mostrar(ex);
+            this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
-    }//GEN-LAST:event_btnRegistrarActionPerformed
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void tfCerrarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseMoved
         jPanel4.setBackground(Color.decode("#EAEAEA"));
     }//GEN-LAST:event_tfCerrarMouseMoved
 
     private void tfCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseClicked
-        this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING)); 
+        this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_tfCerrarMouseClicked
 
     private void tfCerrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseExited
@@ -307,21 +273,15 @@ public class RegistroPelicula extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel5MousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel LabelDirector;
-    private javax.swing.JLabel LabelDuracion;
-    private javax.swing.JLabel LabelGenero;
-    private javax.swing.JLabel LabelNombre;
-    private javax.swing.JLabel LabelRegistro;
+    private javax.swing.JLabel LabelEliminar;
+    private javax.swing.JLabel LabelPelicula;
     private javax.swing.JPanel PanelFondo;
     private javax.swing.JPanel PanelTitulo;
-    private javax.swing.JButton btnRegistrar;
-    private javax.swing.JTextField director;
-    private javax.swing.JComboBox<String> generoComboBox;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTextField nombrePelicula;
+    private javax.swing.JComboBox<String> peliculaComboBox;
     private javax.swing.JLabel result;
-    private javax.swing.JSpinner spinnerDuracion;
     private javax.swing.JLabel tfCerrar;
     // End of variables declaration//GEN-END:variables
 }

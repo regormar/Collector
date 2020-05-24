@@ -6,6 +6,7 @@ public class Pelicula extends Miscelanea{
     private String direccion;
     private int duracion;   
     private int minuto;
+    private int valoracion;
 
     public Pelicula(String direccion, int duracion, String nombre, int genero) {
         super(nombre, genero);
@@ -37,5 +38,12 @@ public class Pelicula extends Miscelanea{
         this.direccion = direccion;
     }
 
-    
+    public int getValoracion() {
+        return valoracion;
+    }
+
+    public void setValoracion(int valoracion) {
+        this.valoracion = valoracion;
+    }
+
 }

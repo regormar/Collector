@@ -13,6 +13,8 @@ public class Excepcion extends Exception {
     public static final int ERROR_USERNAME_NOT_AVAILABLE = 4;
     public static final int ERROR_LOGIN_INCORRECTO = 5;
     public static final int ERROR_MOVIE_EXIST = 6;
+    public static final int GENERO_INVALIDO = 7;
+    public static final int PELICULA_INVALIDA = 8;
     
     private int code;
 
@@ -23,7 +25,9 @@ public class Excepcion extends Exception {
         "Las contraseñas no coinciden",
         "El nombre de usuario no esta disponible",
         "Login incorrecto",
-        "Esta pelicula ya existe"       
+        "Esta pelicula ya existe",          
+        "Seleccion invalida: Seleccione un genero valido",          
+        "Seleccion invalida: Seleccione una pelicula valida"                     
     );
 
     public Excepcion(int code) {

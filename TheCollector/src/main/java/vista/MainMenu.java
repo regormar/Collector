@@ -55,7 +55,6 @@ public class MainMenu extends javax.swing.JFrame {
 
         jLabel5.setBackground(new java.awt.Color(0, 0, 0));
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel5.setIcon(new javax.swing.ImageIcon("C:\\Users\\ROGER\\Documents\\NetBeansProjects\\Collector\\TheCollector\\src\\main\\java\\assets\\logofondo.png")); // NOI18N
 
         btnJuegos.setBackground(new java.awt.Color(51, 51, 51));
         btnJuegos.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
@@ -240,16 +239,31 @@ public class MainMenu extends javax.swing.JFrame {
         btnAnadir.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
         btnAnadir.setText("Añadir");
         btnAnadir.setBorder(null);
+        btnAnadir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnadirActionPerformed(evt);
+            }
+        });
 
         btnEditar.setBackground(new java.awt.Color(255, 255, 255));
         btnEditar.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
         btnEditar.setText("EDITAR");
         btnEditar.setBorder(null);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setBackground(new java.awt.Color(255, 255, 255));
         btnEliminar.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
         btnEliminar.setText("ELIMINAR");
         btnEliminar.setBorder(null);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnEliminar1.setBackground(new java.awt.Color(255, 255, 255));
         btnEliminar1.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
@@ -427,6 +441,63 @@ public class MainMenu extends javax.swing.JFrame {
                 break;              
         }
     }//GEN-LAST:event_btnCrearActionPerformed
+
+    private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
+        switch(lblTipo.getText()){
+            case "LIBROS":
+                
+                break;
+            case "VIDEOJUEGOS":
+                
+                break;
+            case "PELÍCULAS":
+                AñadirPelicula añadirPelicula = new AñadirPelicula();
+                añadirPelicula.setLocationRelativeTo(null);
+                añadirPelicula.setVisible(true);
+                break;
+            case "SERIES":
+                
+                break;              
+        }
+    }//GEN-LAST:event_btnAnadirActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        switch(lblTipo.getText()){
+            case "LIBROS":
+                
+                break;
+            case "VIDEOJUEGOS":
+                
+                break;
+            case "PELÍCULAS":
+                EliminarPelicula eliminarPelicula = new EliminarPelicula();
+                eliminarPelicula.setLocationRelativeTo(null);
+                eliminarPelicula.setVisible(true);
+                break;
+            case "SERIES":
+                
+                break;              
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        switch(lblTipo.getText()){
+            case "LIBROS":
+                
+                break;
+            case "VIDEOJUEGOS":
+                
+                break;
+            case "PELÍCULAS":
+                EditarPelicula editarPelicula = new EditarPelicula();
+                editarPelicula.setLocationRelativeTo(null);
+                editarPelicula.setVisible(true);
+                break;
+            case "SERIES":
+                
+                break;              
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
