@@ -212,6 +212,45 @@ public class CollectorDao {
         return activity;
     }
     
+    //Funcion que selecciona todos los usuarios registrados en la bbdd.
+    public static ArrayList<Usuario> selectUsuarios() throws SQLException {
+        String query = "select * from usuario";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        ArrayList<Usuario> activity = new ArrayList<>();
+        while (rs.next()) {
+            Usuario u = new Usuario();
+            u.setUsername(rs.getString("username"));
+            u.setPass(rs.getString("pass"));
+            u.setNombre(rs.getString("nombre"));
+            u.setApellidos(rs.getString("apellidos"));
+            u.setTipo(rs.getInt("tipo"));
+            u.setEmail(rs.getString("email"));
+            activity.add(u);
+        }
+        rs.close();
+        st.close();
+        return activity;
+    }
+    
+    //Funcion para modificar en la bbdd los datos de un usuario.
+    public static void modificarUsuario(Usuario u, String oldName) throws SQLException{
+        String update = "update usuario set username=?, pass=?, nombre=?, apellidos=?, tipo=?, email=? where username=?";
+        PreparedStatement ps = conexion.prepareStatement(update);
+        ps.setString(1, u.getUsername());
+        ps.setString(2, u.getPass());
+        ps.setString(3, u.getNombre());
+        ps.setString(4, u.getApellidos());
+        ps.setInt(5, u.getTipo());
+        ps.setString(6, u.getEmail());
+        ps.setString(7, oldName);
+        ps.executeUpdate();
+        ps.close();
+        if(usuActual.equals(oldName)){
+            usuActual = oldName;
+        }
+    }
+    
     //Funcion para modificar en la bbdd la pelicula de un usuario.
     public static void modificarPeliculaUsuario(Pelicula p) throws SQLException{
         String update = "update peliculausuario set minuto=?, valoracion=? where username=? and idpelicula=?";

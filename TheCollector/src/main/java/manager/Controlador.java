@@ -59,6 +59,26 @@ public class Controlador {
         throw new Succestion(Succestion.USER_REGISTERED); 
     }
     
+    //Funcion para validar si los datos a modificar son correctos.
+    public static void validarUsuario(Usuario usu, String pass2, String oldName) throws Excepcion, SQLException, Succestion{
+        if(usu.getUsername().equals("") || usu.getNombre().equals("") || usu.getApellidos().equals("") || usu.getPass().equals("") || pass2.equals("") || usu.getEmail().equals("")){
+            throw new Excepcion(Excepcion.ERROR_EMPTY_FIELDS);
+        }
+        if(!usu.getPass().equals(pass2)){
+            throw new Excepcion(Excepcion.ERROR_DIFFERENT_PASSWORDS);
+        }
+        if(!oldName.equals(usu.getUsername())){
+            if(CollectorDao.checkUsername(usu)){
+                throw new Excepcion(Excepcion.ERROR_USERNAME_NOT_AVAILABLE);
+            }
+        }
+        CollectorDao.modificarUsuario(usu, oldName);
+        if(currentUser.getUsername().equals(oldName)){
+            currentUser = usu;
+        }
+        throw new Succestion(Succestion.USER_EDITED); 
+    }
+    
     //Funcion para validar el registro de una pelicula.
     public static void validarPelicula(Pelicula p) throws Excepcion, SQLException, Succestion {
         if(p.getDireccion().equals("") || p.getNombre().equals("")){

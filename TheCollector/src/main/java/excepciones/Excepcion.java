@@ -23,6 +23,7 @@ public class Excepcion extends Exception {
     public static final int ERROR_GAME_EXIST = 14;
     public static final int JUEGO_INVALIDO = 15;
     public static final int GAME_INVALIDO = 16;
+    public static final int INVALID_USER = 17;
     
     private int code;
 
@@ -43,7 +44,8 @@ public class Excepcion extends Exception {
         "El minuto de película no puede ser superior al de la duración total",
         "Este videojuego ya existe",
         "Seleccion invalida: Seleccione un juego válido",
-        "Seleccion invalida: Seleccione un videojuego válido"
+        "Seleccion invalida: Seleccione un videojuego válido",
+        "Seleccion invalida: Seleccione un usuario válido"
     );
 
     public Excepcion(int code) {

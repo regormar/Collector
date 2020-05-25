@@ -530,7 +530,7 @@ public class MainMenu extends javax.swing.JFrame {
                     registroPelicula.setVisible(true);
                     break;
                 case "SERIES":
-
+                    
                     break;  
                 default:
                     Registro registro = new Registro();
@@ -616,7 +616,11 @@ public class MainMenu extends javax.swing.JFrame {
                     break;
                 case "SERIES":
 
-                    break;              
+                    break; 
+                default:
+                    EditarUsuario editarUsuario = new EditarUsuario();
+                    editarUsuario.setLocationRelativeTo(null);
+                    editarUsuario.setVisible(true);
             }
         }catch (AlertException ex) { 
             mostrar.mostrar(ex);             
