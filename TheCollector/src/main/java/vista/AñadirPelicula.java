@@ -19,6 +19,7 @@ public class AñadirPelicula extends javax.swing.JDialog {
     private int mousepX;
     private int mousepY;
     private static ArrayList<Pelicula> peliculas = new ArrayList<>();
+    private static ArrayList<Pelicula> peliculasUsuario = new ArrayList<>();
     private static Pelicula peli;
     
     public AñadirPelicula() throws AlertException {
@@ -36,9 +37,12 @@ public class AñadirPelicula extends javax.swing.JDialog {
             peliculas = collectorDao.selectPeliculas();
             if(!peliculas.isEmpty()){
                 for(Pelicula pelicula : peliculas){
-                    int id = collectorDao.getIdPeliculaByName(pelicula.getNombre(), pelicula.getDireccion());
-                    if(!collectorDao.checkPeliculaUsuario(id)){
-                        peliculaComboBox.addItem(pelicula.getNombre());
+                    if(!collectorDao.checkPeliculaUsuario(pelicula.getId())){
+                        peliculaComboBox.addItem(pelicula.getNombre() + " - " + pelicula.getDireccion());
+                        peliculasUsuario.add(pelicula);
+                    }
+                    if(peliculaComboBox.getItemCount() <= 1){
+                        throw new AlertException(AlertException.NO_EXISTEN_MAS_PELICULAS);
                     }
                 }
             }else{
@@ -193,8 +197,7 @@ public class AñadirPelicula extends javax.swing.JDialog {
                 .addGap(43, 43, 43)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelFondoLayout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                         .addComponent(btnAnyadir, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(PanelFondoLayout.createSequentialGroup()
@@ -256,28 +259,25 @@ public class AñadirPelicula extends javax.swing.JDialog {
             if(pelicula == 0){
                 throw new Excepcion(Excepcion.PELICULA_INVALIDA);
             }
-            String peliculaNombre = (String) peliculaComboBox.getSelectedItem();
-            for(int x=0; x<peliculas.size(); x++){
-                if(peliculaNombre.equals(peliculas.get(x).getNombre())){
-                    peli = peliculas.get(x);
-                }
-            }
+            int posicion = pelicula - 1;
+            peli = peliculasUsuario.get(posicion);
             int minuto = Integer.parseInt(spinnerMinuto.getValue().toString());
+            if(minuto > peli.getDuracion()){
+                throw new Excepcion(Excepcion.INVALID_MINUTE_NUMBER);
+            }
             int valoracion = Integer.parseInt(spinnerValoracion.getValue().toString());
-            
             try {
-                int idPelicula = collectorDao.getIdPeliculaByName(peliculaNombre, peli.getDireccion());
                 peli.setMinuto(minuto);
                 peli.setValoracion(valoracion);
-                collectorDao.insertarPeliculaUsuario(peli, idPelicula);
+                collectorDao.insertarPeliculaUsuario(peli);
                 throw new Succestion(Succestion.MOVIE_ADDED); 
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
         } catch(Excepcion ex){
-            spinnerMinuto.setValue(0);
-            spinnerValoracion.setValue(0);
-            peliculaComboBox.setSelectedIndex(0);
+            //spinnerMinuto.setValue(0);
+            //spinnerValoracion.setValue(0);
+            //peliculaComboBox.setSelectedIndex(0);
             result.setText(ex.getMessage());
         } catch(Succestion ex) {
             mostrar.mostrar(ex);

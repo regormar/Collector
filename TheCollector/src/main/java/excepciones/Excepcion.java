@@ -19,6 +19,7 @@ public class Excepcion extends Exception {
     public static final int ERROR_UNSELECTED_GENRE = 10;
     public static final int BOOK_INVALIDO = 11;
     public static final int INVALID_PAGE_NUMBER = 12;
+    public static final int INVALID_MINUTE_NUMBER = 13;
     
     private int code;
 
@@ -35,7 +36,8 @@ public class Excepcion extends Exception {
         "Este libro ya existe",
         "Selecciona un género",
         "Seleccion invalida: Seleccione un libro válido",
-        "El número de página no puede ser superior al total"
+        "El número de página no puede ser superior al total",
+        "El minuto de película no puede ser superior al de la duración total"
     );
 
     public Excepcion(int code) {

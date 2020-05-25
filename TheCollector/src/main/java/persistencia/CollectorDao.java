@@ -22,7 +22,6 @@ public class CollectorDao {
     public static Connection conexion;
     private static CollectorDao instance;
     private static String usuActual;
-    private static int IdUsuActual;
     
     public static CollectorDao getInstace() {
         if (instance == null) {
@@ -34,14 +33,6 @@ public class CollectorDao {
     //Funcion para guardar la id del usuario actual.
     public static void usuLogin(String usu) throws SQLException{
         usuActual = usu;
-        String select = "select idusuario from usuario where username ='" + usu + "'";
-        Statement st = conexion.createStatement();
-        ResultSet rs = st.executeQuery(select);
-        if (rs.next()) {
-            IdUsuActual = rs.getInt("idusuario");
-        }
-        rs.close() ;
-        st.close();
     }
     
     //Función que devuelve el número de libros que tiene un usuario.
@@ -58,18 +49,18 @@ public class CollectorDao {
         return veces;
     }
     
-    //Funcion que selecciona la id de una pelicula segun su nombre.
-    public static int getIdPeliculaByName(String nombre, String director) throws SQLException {
-        String select = "select idpelicula from pelicula where nombrepelicula ='" + nombre + "' and direccion = '" + director + "'";
-        int id = 0;
+    //Funcion que selecciona el nombre de un genero segun su id.
+    public static String getNombreGeneroById(int id) throws SQLException {
+        String select = "select nombregenero from genero where idgenero ='" + id + "'";
+        String nombre = "";
         Statement st = conexion.createStatement();
         ResultSet rs = st.executeQuery(select);
         if (rs.next()) {
-            id = rs.getInt("idpelicula");
+            nombre = rs.getString("nombregenero");
         }
         rs.close() ;
         st.close();
-        return id;
+        return nombre;
     }
 
     //Funcion que selecciona la id de un genero segun su nombre.
@@ -107,8 +98,8 @@ public class CollectorDao {
     }
     
     //Funcion que selecciona los datos de la pelicula del usuario.
-    public static Pelicula selectPeliculaUsuario(Pelicula peli, int id) throws SQLException {
-        String query = "select * from peliculausuario where username='" + usuActual + "' and idpelicula = '" + id + "'";
+    public static Pelicula selectPeliculaUsuario(Pelicula peli) throws SQLException {
+        String query = "select * from peliculausuario where username='" + usuActual + "' and idpelicula = '" + peli.getId() + "'";
         Statement st = conexion.createStatement();
         ResultSet rs = st.executeQuery(query);
         while (rs.next()) {
@@ -127,7 +118,8 @@ public class CollectorDao {
         ResultSet rs = st.executeQuery(query);
         ArrayList<Pelicula> activity = new ArrayList<>();
         while (rs.next()) {
-            Pelicula p = new Pelicula(null, 0, null, 0);
+            Pelicula p = new Pelicula();
+            p.setId(rs.getInt("idpelicula"));
             p.setDireccion(rs.getString("direccion"));
             p.setDuracion(rs.getInt("duracion"));
             p.setNombre(rs.getString("nombrepelicula"));
@@ -159,12 +151,24 @@ public class CollectorDao {
         return activity;
     }
     
+    //Funcion para modificar en la bbdd la pelicula de un usuario.
+    public static void modificarPeliculaUsuario(Pelicula p) throws SQLException{
+        String update = "update peliculausuario set minuto=?, valoracion=? where username=? and idpelicula=?";
+        PreparedStatement ps = conexion.prepareStatement(update);
+        ps.setInt(1, p.getMinuto());
+        ps.setInt(2, p.getValoracion());
+        ps.setString(3, usuActual);
+        ps.setInt(4, p.getId());
+        ps.executeUpdate();
+        ps.close();
+    }
+    
     //Funcion para insertar una pelicula en la bbdd.
-    public static void insertarPeliculaUsuario(Pelicula p, int id) throws SQLException {
+    public static void insertarPeliculaUsuario(Pelicula p) throws SQLException {
         String insert = "insert into peliculausuario values (?, ?, ?, ?);";
         PreparedStatement ps = conexion.prepareStatement(insert);
         ps.setString(1, usuActual);
-        ps.setInt(2, id);
+        ps.setInt(2, p.getId());
         ps.setInt(3, p.getMinuto());
         ps.setInt(4, p.getValoracion());
         ps.executeUpdate();

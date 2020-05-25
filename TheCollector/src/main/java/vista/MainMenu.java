@@ -117,7 +117,6 @@ public class MainMenu extends javax.swing.JFrame {
         });
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\ROGER\\Documents\\NetBeansProjects\\TheCollector\\TheCollector\\src\\main\\java\\assets\\imagen.png")); // NOI18N
 
         btnUsuario.setBackground(new java.awt.Color(51, 51, 51));
         btnUsuario.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
@@ -329,6 +328,11 @@ public class MainMenu extends javax.swing.JFrame {
         btnEliminar1.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
         btnEliminar1.setText("Mostrar");
         btnEliminar1.setBorder(null);
+        btnEliminar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminar1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -587,6 +591,29 @@ public class MainMenu extends javax.swing.JFrame {
             login.setVisible(true); 
         }
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
+
+    private void btnEliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar1ActionPerformed
+        try {
+            switch(lblTipo.getText()){
+                case "LIBROS":
+
+                    break;
+                case "VIDEOJUEGOS":
+
+                    break;
+                case "PELÍCULAS":
+                    MostrarPeliculas mostrarPeliculas = new MostrarPeliculas();
+                    mostrarPeliculas.setLocationRelativeTo(null);
+                    mostrarPeliculas.setVisible(true);
+                    break;
+                case "SERIES":
+
+                    break;              
+            }
+        }catch (AlertException ex) { 
+            mostrar.mostrar(ex);             
+        }
+    }//GEN-LAST:event_btnEliminar1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

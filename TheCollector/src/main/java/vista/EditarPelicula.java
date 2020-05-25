@@ -18,6 +18,7 @@ public class EditarPelicula extends javax.swing.JDialog {
     private int mousepX;
     private int mousepY;
     private static ArrayList<Pelicula> peliculas = new ArrayList<>();
+    private static ArrayList<Pelicula> peliculasUsuario = new ArrayList<>();
     private static Pelicula peli;
 
     public EditarPelicula() throws AlertException {
@@ -29,19 +30,21 @@ public class EditarPelicula extends javax.swing.JDialog {
     
     //Funcion que actualiza los datos de las peliculas.
     public void actualizarComboBox() throws AlertException{
+        spinnerMinuto.setEnabled(false);
+        spinnerValoracion.setEnabled(false);
+        btnEditar.setEnabled(false);
         try {
             peliculaComboBox.removeAllItems();
             peliculaComboBox.addItem("Selecciona una pelicula:");
             peliculas = collectorDao.selectPeliculas();
             if(!peliculas.isEmpty()){
                 for(Pelicula pelicula : peliculas){
-                    int id = collectorDao.getIdPeliculaByName(pelicula.getNombre(), pelicula.getDireccion());
-                    if(collectorDao.checkPeliculaUsuario(id)){
-                        peliculaComboBox.addItem(pelicula.getNombre());
+                    if(collectorDao.checkPeliculaUsuario(pelicula.getId())){
+                        peliculaComboBox.addItem(pelicula.getNombre()+ " - " + pelicula.getDireccion());
+                        peliculasUsuario.add(pelicula);
                     }
                 }
-                int total = peliculaComboBox.getItemCount();
-                if(total <= 1){
+                if(peliculaComboBox.getItemCount() <= 1){
                     throw new AlertException(AlertException.NO_TIENE_PELICULAS);
                 }
             }else{
@@ -63,7 +66,7 @@ public class EditarPelicula extends javax.swing.JDialog {
 
         PanelFondo = new javax.swing.JPanel();
         LabelPelicula = new javax.swing.JLabel();
-        btnAnyadir = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         tfCerrar = new javax.swing.JLabel();
         result = new javax.swing.JLabel();
@@ -85,14 +88,14 @@ public class EditarPelicula extends javax.swing.JDialog {
         LabelPelicula.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
         LabelPelicula.setText("PELICULA");
 
-        btnAnyadir.setBackground(new java.awt.Color(51, 51, 51));
-        btnAnyadir.setFont(new java.awt.Font("Tiza", 0, 8)); // NOI18N
-        btnAnyadir.setForeground(new java.awt.Color(255, 255, 255));
-        btnAnyadir.setText("AÑADIR");
-        btnAnyadir.setBorder(null);
-        btnAnyadir.addActionListener(new java.awt.event.ActionListener() {
+        btnEditar.setBackground(new java.awt.Color(51, 51, 51));
+        btnEditar.setFont(new java.awt.Font("Tiza", 0, 8)); // NOI18N
+        btnEditar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditar.setText("EDITAR");
+        btnEditar.setBorder(null);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnyadirActionPerformed(evt);
+                btnEditarActionPerformed(evt);
             }
         });
 
@@ -221,10 +224,9 @@ public class EditarPelicula extends javax.swing.JDialog {
                                     .addComponent(spinnerMinuto)
                                     .addComponent(spinnerValoracion, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)))
                             .addGroup(PanelFondoLayout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnAnyadir, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(PanelFondoLayout.createSequentialGroup()
                                 .addComponent(LabelPelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, Short.MAX_VALUE)
@@ -255,7 +257,7 @@ public class EditarPelicula extends javax.swing.JDialog {
                     .addComponent(LabelValoracion, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAnyadir, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31))
         );
@@ -274,40 +276,26 @@ public class EditarPelicula extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAnyadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnyadirActionPerformed
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         try{
-            int pelicula = peliculaComboBox.getSelectedIndex();
-            if(pelicula == 0){
-                throw new Excepcion(Excepcion.PELICULA_INVALIDA);
-            }
-            String peliculaNombre = (String) peliculaComboBox.getSelectedItem();
-            for(int x=0; x<peliculas.size(); x++){
-                if(peliculaNombre.equals(peliculas.get(x).getNombre())){
-                    peli = peliculas.get(x);
-                }
-            }
             int minuto = Integer.parseInt(spinnerMinuto.getValue().toString());
-            int valoracion = Integer.parseInt(spinnerValoracion.getValue().toString());
-
-            try {
-                int idPelicula = collectorDao.getIdPeliculaByName(peliculaNombre, peli.getDireccion());
-                peli.setMinuto(minuto);
-                peli.setValoracion(valoracion);
-                collectorDao.insertarPeliculaUsuario(peli, idPelicula);
-                throw new Succestion(Succestion.MOVIE_ADDED);
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
+            if(minuto > peli.getDuracion()){
+                throw new Excepcion(Excepcion.INVALID_MINUTE_NUMBER);
             }
-        } catch(Excepcion ex){
-            spinnerMinuto.setValue(0);
-            spinnerValoracion.setValue(0);
-            peliculaComboBox.setSelectedIndex(0);
+            int valoracion = Integer.parseInt(spinnerValoracion.getValue().toString());
+            peli.setMinuto(minuto);
+            peli.setValoracion(valoracion);
+            collectorDao.modificarPeliculaUsuario(peli);
+            throw new Succestion(Succestion.MOVIE_EDITED);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }catch(Excepcion ex){
             result.setText(ex.getMessage());
-        } catch(Succestion ex) {
+        }catch(Succestion ex) {
             mostrar.mostrar(ex);
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
-    }//GEN-LAST:event_btnAnyadirActionPerformed
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     private void tfCerrarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseMoved
         jPanel4.setBackground(Color.decode("#EAEAEA"));
@@ -338,16 +326,14 @@ public class EditarPelicula extends javax.swing.JDialog {
             if(pelicula == 0){
                 throw new Excepcion(Excepcion.PELICULA_INVALIDA);
             }
-            String peliculaNombre = (String) peliculaComboBox.getSelectedItem();
-            for(int x=0; x<peliculas.size(); x++){
-                if(peliculaNombre.equals(peliculas.get(x).getNombre())){
-                    peli = peliculas.get(x);
-                }
-            }
-            int idPelicula = collectorDao.getIdPeliculaByName(peliculaNombre, peli.getDireccion());
-            peli = collectorDao.selectPeliculaUsuario(peli, idPelicula);
+            int posicion = pelicula - 1;
+            peli = peliculasUsuario.get(posicion);
+            peli = collectorDao.selectPeliculaUsuario(peli);
             spinnerMinuto.setValue(peli.getMinuto());
             spinnerValoracion.setValue(peli.getValoracion());
+            spinnerMinuto.setEnabled(true);
+            spinnerValoracion.setEnabled(true);
+            btnEditar.setEnabled(true);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         } catch(Excepcion ex){
@@ -365,7 +351,7 @@ public class EditarPelicula extends javax.swing.JDialog {
     private javax.swing.JLabel LabelValoracion;
     private javax.swing.JPanel PanelFondo;
     private javax.swing.JPanel PanelTitulo;
-    private javax.swing.JButton btnAnyadir;
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnSeleccionar;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel4;
