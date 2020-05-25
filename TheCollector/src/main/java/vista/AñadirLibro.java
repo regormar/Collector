@@ -19,6 +19,7 @@ public class AñadirLibro extends javax.swing.JDialog {
     private int mousepX;
     private int mousepY;
     private static ArrayList<Libro> libros = new ArrayList<>();
+    private static ArrayList<Libro> librosUsuario = new ArrayList<>();
     private static Libro book;
     
     public AñadirLibro() throws AlertException {
@@ -34,13 +35,16 @@ public class AñadirLibro extends javax.swing.JDialog {
             libroComboBox.addItem("Selecciona un libro:");
             libros = collectorDao.selectLibros();
             if(!libros.isEmpty()){
-                for(Libro libro : libros){
+                for(Libro libro : libros){                    
                     if(!collectorDao.checkLibroUsuario(libro.getId())){
-                        libroComboBox.addItem(libro.getNombre() + " - " + libro.getAutor());
-                    }
+                        librosUsuario.add(libro);
+                    }   
                     if(collectorDao.getNumBooksByUser() == libros.size()){
                         throw new AlertException(AlertException.NO_EXISTEN_MAS_LIBROS);
                     }
+                }
+                for(Libro libro : librosUsuario){
+                    libroComboBox.addItem(libro.getNombre() + " - " + libro.getAutor());                   
                 }
             }else{
                 throw new AlertException(AlertException.NO_EXISTEN_LIBROS);
@@ -253,7 +257,8 @@ public class AñadirLibro extends javax.swing.JDialog {
             if(libro == 0){
                 throw new Excepcion(Excepcion.BOOK_INVALIDO);
             }
-            book = libros.get(libro);
+            libro--;
+            book = librosUsuario.get(libro);
             int paginaActual = Integer.parseInt(spActualPg.getValue().toString());
             if(paginaActual > book.getNumPaginas()){
                 throw new Excepcion(Excepcion.INVALID_PAGE_NUMBER);
@@ -274,6 +279,8 @@ public class AñadirLibro extends javax.swing.JDialog {
             libroComboBox.setSelectedIndex(0);
             result.setText(ex.getMessage());
         } catch(Succestion ex) {
+            libros.clear();
+            librosUsuario.clear();
             mostrar.mostrar(ex);
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
@@ -284,6 +291,8 @@ public class AñadirLibro extends javax.swing.JDialog {
     }//GEN-LAST:event_tfCerrarMouseMoved
 
     private void tfCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseClicked
+        libros.clear();
+        librosUsuario.clear();
         this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_tfCerrarMouseClicked
 

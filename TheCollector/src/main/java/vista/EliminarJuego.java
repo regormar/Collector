@@ -36,10 +36,12 @@ public class EliminarJuego extends javax.swing.JDialog {
             juegos = collectorDao.selectJuegos();
             if(!juegos.isEmpty()){
                 for(Juego juego : juegos){
-                    if(collectorDao.checkJuegoUsuario(juego.getId())){
-                        cbJuego.addItem(juego.getNombre()+ " - " + juego.getDesarrolladora());
+                    if(collectorDao.checkJuegoUsuario(juego.getId())){                  
                         juegosUsuario.add(juego);
                     }
+                }
+                for(Juego juego : juegosUsuario){
+                     cbJuego.addItem(juego.getNombre()+ " - " + juego.getDesarrolladora());
                 }
                 if(cbJuego.getItemCount() <= 1){
                     throw new AlertException(AlertException.NO_TIENE_JUEGOS);
@@ -226,8 +228,8 @@ public class EliminarJuego extends javax.swing.JDialog {
             if(pelicula == 0){
                 throw new Excepcion(Excepcion.GAME_INVALIDO);
             }
-            int posicion = pelicula - 1;
-            game = juegosUsuario.get(posicion);
+            pelicula--;
+            game = juegosUsuario.get(pelicula);
             try {
                 collectorDao.eliminarJuegoUsuario(game.getId());
                 throw new Succestion(Succestion.GAME_REMOVED);

@@ -20,6 +20,7 @@ public class AñadirJuego extends javax.swing.JDialog {
     private int mousepX;
     private int mousepY;
     private static ArrayList<Juego> juegos = new ArrayList<>();
+    private static ArrayList<Juego> juegosUsuario = new ArrayList<>();
     private static Juego game;
     
     public AñadirJuego() throws AlertException {
@@ -38,10 +39,15 @@ public class AñadirJuego extends javax.swing.JDialog {
             if(!juegos.isEmpty()){
                 for(Juego juego : juegos){
                     if(!collectorDao.checkJuegoUsuario(juego.getId())){
-                        cbJuego.addItem(juego.getNombre() + " - " + juego.getDesarrolladora());
+                        juegosUsuario.add(juego);
                     }
-                    if(collectorDao.getNumGamesByUser() == juegos.size()){
+                }
+                for(Juego juego : juegosUsuario){
+                    if(collectorDao.getNumGamesByUser() == juegosUsuario.size()){
                         throw new AlertException(AlertException.NO_EXISTEN_MAS_JUEGOS);
+                    }
+                    if(!collectorDao.checkJuegoUsuario(juego.getId())){
+                        cbJuego.addItem(juego.getNombre() + " - " + juego.getDesarrolladora());
                     }
                 }
             }else{
@@ -241,7 +247,8 @@ public class AñadirJuego extends javax.swing.JDialog {
             if(juego == 0){
                 throw new Excepcion(Excepcion.GAME_INVALIDO);
             }
-            game = juegos.get(juego);
+            juego--;
+            game = juegosUsuario.get(juego);
             int valoracion = Integer.parseInt(spinnerValoracion.getValue().toString());
             try {
                 game.setValoracion(valoracion);
@@ -255,6 +262,8 @@ public class AñadirJuego extends javax.swing.JDialog {
             cbJuego.setSelectedIndex(0);
             result.setText(ex.getMessage());
         } catch(Succestion ex) {
+            juegos.clear();
+            juegosUsuario.clear();
             mostrar.mostrar(ex);
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
@@ -265,6 +274,8 @@ public class AñadirJuego extends javax.swing.JDialog {
     }//GEN-LAST:event_tfCerrarMouseMoved
 
     private void tfCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseClicked
+        juegos.clear();
+        juegosUsuario.clear();
         this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_tfCerrarMouseClicked
 

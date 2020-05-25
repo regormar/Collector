@@ -70,8 +70,7 @@ public class MostrarLibros extends javax.swing.JDialog {
             System.out.println(ex.getMessage());
         }
     }
-
-
+  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -222,8 +221,7 @@ public class MostrarLibros extends javax.swing.JDialog {
     }//GEN-LAST:event_tfCerrarMouseMoved
 
     private void tfCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseClicked
-        libros.clear();
-        librosUsuario.clear();
+        dtm.setRowCount(0);
         this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_tfCerrarMouseClicked
 

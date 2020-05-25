@@ -37,9 +37,11 @@ public class EliminarLibro extends javax.swing.JDialog {
             if(!libros.isEmpty()){
                 for(Libro libro : libros){
                     if(collectorDao.checkLibroUsuario(libro.getId())){
-                        cbLibro.addItem(libro.getNombre()+ " - " + libro.getAutor());
                         librosUsuario.add(libro);
                     }
+                }
+                for(Libro libro : librosUsuario){
+                    cbLibro.addItem(libro.getNombre()+ " - " + libro.getAutor());
                 }
                 if(cbLibro.getItemCount() <= 1){
                     throw new AlertException(AlertException.NO_TIENE_LIBROS);
@@ -239,6 +241,8 @@ public class EliminarLibro extends javax.swing.JDialog {
             cbLibro.setSelectedIndex(0);
             result.setText(ex.getMessage());
         } catch(Succestion ex) {
+            libros.clear();
+            librosUsuario.clear();
             mostrar.mostrar(ex);
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
@@ -249,6 +253,8 @@ public class EliminarLibro extends javax.swing.JDialog {
     }//GEN-LAST:event_tfCerrarMouseMoved
 
     private void tfCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseClicked
+        libros.clear();
+        librosUsuario.clear();
         this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_tfCerrarMouseClicked
 
