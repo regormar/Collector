@@ -14,18 +14,20 @@ public class Succestion extends Exception{
     public static final int BOOK_ADDED = 5;
     public static final int MOVIE_EDITED = 6;
     public static final int BOOK_REMOVED = 7;
+    public static final int BOOK_EDITED = 8;
     
     private int code;
 
     private final List<String> MESSAGES = Arrays.asList(
         "¡Libro registrado con éxito!",
-        "!Usuario registrado con éxito!",
-        "!Película registrada con éxito!",
-        "!Película añadida con éxito!",
-        "!Película eliminada con éxito!",
-        "!Libro añadido con éxito!",
-        "!Película editada con éxito!",
-        "!Libro eliminado con éxito!"
+        "¡Usuario registrado con éxito!",
+        "¡Película registrada con éxito!",
+        "¡Película añadida con éxito!",
+        "¡Película eliminada con éxito!",
+        "¡Libro añadido con éxito!",
+        "¡Película editada con éxito!",
+        "¡Libro eliminado con éxito!",
+        "¡Libro editado con éxito!"
     );
 
     public Succestion(int code) {

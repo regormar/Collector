@@ -560,7 +560,9 @@ public class MainMenu extends javax.swing.JFrame {
         try {
             switch(lblTipo.getText()){
                 case "LIBROS":
-
+                    EditarLibro editarLibro = new EditarLibro();
+                    editarLibro.setLocationRelativeTo(null);
+                    editarLibro.setVisible(true);
                     break;
                 case "VIDEOJUEGOS":
 

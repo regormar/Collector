@@ -33,12 +33,12 @@ public class AñadirLibro extends javax.swing.JDialog {
     public void actualizarComboBox() throws AlertException{
         try {
             libroComboBox.removeAllItems();
-            libroComboBox.addItem("Selecciona una libro:");
+            libroComboBox.addItem("Selecciona un libro:");
             libros = collectorDao.selectLibros();
             if(!libros.isEmpty()){
                 for(Libro libro : libros){
                     if(!collectorDao.checkLibroUsuario(libro.getId())){
-                        libroComboBox.addItem(libro.getNombre()+" (" + libro.getAutor() + ")");
+                        libroComboBox.addItem(libro.getNombre() + " - " + libro.getAutor());
                     }
                     if(collectorDao.getNumBooksByUser() == libros.size()){
                         throw new AlertException(AlertException.NO_EXISTEN_MAS_LIBROS);

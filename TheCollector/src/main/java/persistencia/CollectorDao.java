@@ -111,6 +111,20 @@ public class CollectorDao {
         return peli;
     }
     
+    //Funcion que selecciona los datos del libro del usuario.
+    public static Libro selectLibroUsuario(Libro book) throws SQLException {
+        String query = "select * from librousuario where username='" + usuActual + "' and idlibro = '" + book.getId() + "'";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        while (rs.next()) {
+            book.setPaginaActual(rs.getInt("paginaactual"));
+            book.setValoracion(rs.getInt("valoracion"));
+        }
+        rs.close();
+        st.close();
+        return book;
+    }
+    
     //Funcion que selecciona todas las peliculas registradas en la bbdd.
     public static ArrayList<Pelicula> selectPeliculas() throws SQLException {
         String query = "select * from pelicula";
@@ -159,6 +173,18 @@ public class CollectorDao {
         ps.setInt(2, p.getValoracion());
         ps.setString(3, usuActual);
         ps.setInt(4, p.getId());
+        ps.executeUpdate();
+        ps.close();
+    }
+    
+    //Funcion para modificar en la bbdd el libro de un usuario.
+    public static void modificarLibroUsuario(Libro l) throws SQLException{
+        String update = "update librousuario set paginaactual=?, valoracion=? where username=? and idlibro=?";
+        PreparedStatement ps = conexion.prepareStatement(update);
+        ps.setInt(1, l.getPaginaActual());
+        ps.setInt(2, l.getValoracion());
+        ps.setString(3, usuActual);
+        ps.setInt(4, l.getId());
         ps.executeUpdate();
         ps.close();
     }
