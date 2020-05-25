@@ -37,9 +37,9 @@ public class MostrarJuegos extends javax.swing.JDialog {
                         juego = collectorDao.selectJuegoUsuario(juego);
                         juegosUsuario.add(juego);
                     }
-                    if(juegosUsuario.isEmpty()){
-                        throw new AlertException(AlertException.NO_TIENE_JUEGOS);
-                    }
+                }
+                if(juegosUsuario.isEmpty()){
+                    throw new AlertException(AlertException.NO_TIENE_JUEGOS);
                 }
             }else{
                 throw new AlertException(AlertException.NO_EXISTEN_JUEGOS);
@@ -51,10 +51,6 @@ public class MostrarJuegos extends javax.swing.JDialog {
     
     //Funcion que actualiza los datos de la tabla.
     public void actualizarTabla() throws AlertException{
-        int fila = jTable1.getRowCount();
-        for(int x = fila-1; x>=0; x++){
-            dtm.removeRow(x);
-        }
         try {
             for(Juego juego : juegosUsuario){
                 String genero = collectorDao.getNombreGeneroById(juego.getGenero());
@@ -221,6 +217,8 @@ public class MostrarJuegos extends javax.swing.JDialog {
 
     private void tfCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseClicked
         dtm.setRowCount(0);
+        juegos.clear();
+        juegosUsuario.clear();
         this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_tfCerrarMouseClicked
 

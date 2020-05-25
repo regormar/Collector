@@ -1,8 +1,6 @@
 package vista;
 
 import excepciones.AlertException;
-import excepciones.Excepcion;
-import excepciones.Succestion;
 import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -14,8 +12,6 @@ import persistencia.CollectorDao;
 
 public class MostrarPeliculas extends javax.swing.JDialog {
 
-    private static Controlador manager;
-    private static MostrarExcepciones mostrar;
     public static CollectorDao collectorDao;
     private int mousepX;
     private int mousepY;
@@ -26,8 +22,6 @@ public class MostrarPeliculas extends javax.swing.JDialog {
     
     public MostrarPeliculas() throws AlertException {
         initComponents();
-        manager = Controlador.getInstace();
-        mostrar = MostrarExcepciones.getInstace();
         actualizarDatos();
         actualizarTabla();
     }
@@ -42,9 +36,9 @@ public class MostrarPeliculas extends javax.swing.JDialog {
                         pelicula = collectorDao.selectPeliculaUsuario(pelicula);
                         peliculasUsuario.add(pelicula);
                     }
-                    if(peliculasUsuario.isEmpty()){
-                        throw new AlertException(AlertException.NO_TIENE_PELICULAS);
-                    }
+                }
+                if(peliculasUsuario.isEmpty()){
+                    throw new AlertException(AlertException.NO_TIENE_PELICULAS);
                 }
             }else{
                 throw new AlertException(AlertException.NO_EXISTEN_PELICULAS);
@@ -56,10 +50,6 @@ public class MostrarPeliculas extends javax.swing.JDialog {
     
     //Funcion que actualiza los datos de la tabla.
     public void actualizarTabla() throws AlertException{
-        int fila = jTable1.getRowCount();
-        for(int x = fila-1; x>=0; x++){
-            dtm.removeRow(x);
-        }
         try {
             for(Pelicula pelicula : peliculasUsuario){
                 String genero = collectorDao.getNombreGeneroById(pelicula.getGenero());
@@ -230,6 +220,9 @@ public class MostrarPeliculas extends javax.swing.JDialog {
     }//GEN-LAST:event_tfCerrarMouseMoved
 
     private void tfCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseClicked
+        dtm.setRowCount(0);
+        peliculas.clear();
+        peliculasUsuario.clear();
         this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_tfCerrarMouseClicked
 

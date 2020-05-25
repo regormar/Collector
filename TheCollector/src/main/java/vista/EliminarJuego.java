@@ -240,6 +240,8 @@ public class EliminarJuego extends javax.swing.JDialog {
             cbJuego.setSelectedIndex(0);
             result.setText(ex.getMessage());
         } catch(Succestion ex) {
+            juegos.clear();
+            juegosUsuario.clear();
             mostrar.mostrar(ex);
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
@@ -250,6 +252,8 @@ public class EliminarJuego extends javax.swing.JDialog {
     }//GEN-LAST:event_tfCerrarMouseMoved
 
     private void tfCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseClicked
+        juegos.clear();
+        juegosUsuario.clear();
         this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_tfCerrarMouseClicked
 

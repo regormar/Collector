@@ -287,6 +287,8 @@ public class EditarLibro extends javax.swing.JDialog {
         }catch(Excepcion ex){
             result.setText(ex.getMessage());
         }catch(Succestion ex) {
+            libros.clear();
+            librosUsuario.clear();
             mostrar.mostrar(ex);
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
@@ -297,6 +299,8 @@ public class EditarLibro extends javax.swing.JDialog {
     }//GEN-LAST:event_tfCerrarMouseMoved
 
     private void tfCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseClicked
+        libros.clear();
+        librosUsuario.clear();
         this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_tfCerrarMouseClicked
 

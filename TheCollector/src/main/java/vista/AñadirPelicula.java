@@ -7,13 +7,11 @@ import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import manager.Controlador;
 import modelo.Pelicula;
 import persistencia.CollectorDao;
 
 public class AñadirPelicula extends javax.swing.JDialog {
 
-    private static Controlador manager;
     private static MostrarExcepciones mostrar;
     public static CollectorDao collectorDao;
     private int mousepX;
@@ -24,7 +22,6 @@ public class AñadirPelicula extends javax.swing.JDialog {
     
     public AñadirPelicula() throws AlertException {
         initComponents();
-        manager = Controlador.getInstace();
         mostrar = MostrarExcepciones.getInstace();
         actualizarComboBox();
     }
@@ -41,9 +38,9 @@ public class AñadirPelicula extends javax.swing.JDialog {
                         peliculaComboBox.addItem(pelicula.getNombre() + " - " + pelicula.getDireccion());
                         peliculasUsuario.add(pelicula);
                     }
-                    if(peliculaComboBox.getItemCount() <= 1){
-                        throw new AlertException(AlertException.NO_EXISTEN_MAS_PELICULAS);
-                    }
+                }
+                if(peliculaComboBox.getItemCount() <= 1){
+                    throw new AlertException(AlertException.NO_EXISTEN_MAS_PELICULAS);
                 }
             }else{
                 throw new AlertException(AlertException.NO_EXISTEN_PELICULAS);
@@ -277,11 +274,13 @@ public class AñadirPelicula extends javax.swing.JDialog {
                 System.out.println(ex.getMessage());
             }
         } catch(Excepcion ex){
-            //spinnerMinuto.setValue(0);
-            //spinnerValoracion.setValue(0);
-            //peliculaComboBox.setSelectedIndex(0);
+            spinnerMinuto.setValue(0);
+            spinnerValoracion.setValue(0);
+            peliculaComboBox.setSelectedIndex(0);
             result.setText(ex.getMessage());
         } catch(Succestion ex) {
+            peliculas.clear();
+            peliculasUsuario.clear();
             mostrar.mostrar(ex);
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
@@ -292,6 +291,8 @@ public class AñadirPelicula extends javax.swing.JDialog {
     }//GEN-LAST:event_tfCerrarMouseMoved
 
     private void tfCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseClicked
+        peliculas.clear();
+        peliculasUsuario.clear();
         this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_tfCerrarMouseClicked
 

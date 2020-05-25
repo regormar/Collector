@@ -7,13 +7,11 @@ import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import manager.Controlador;
 import modelo.Pelicula;
 import persistencia.CollectorDao;
 
 public class EditarPelicula extends javax.swing.JDialog {
     
-    private static Controlador manager;
     private static MostrarExcepciones mostrar;
     public static CollectorDao collectorDao;
     private int mousepX;
@@ -24,7 +22,6 @@ public class EditarPelicula extends javax.swing.JDialog {
 
     public EditarPelicula() throws AlertException {
         initComponents();
-        manager = Controlador.getInstace();
         mostrar = MostrarExcepciones.getInstace();
         actualizarComboBox();
     }
@@ -295,6 +292,8 @@ public class EditarPelicula extends javax.swing.JDialog {
         }catch(Excepcion ex){
             result.setText(ex.getMessage());
         }catch(Succestion ex) {
+            peliculas.clear();
+            peliculasUsuario.clear();
             mostrar.mostrar(ex);
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
@@ -305,6 +304,8 @@ public class EditarPelicula extends javax.swing.JDialog {
     }//GEN-LAST:event_tfCerrarMouseMoved
 
     private void tfCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseClicked
+        peliculas.clear();
+        peliculasUsuario.clear();
         this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_tfCerrarMouseClicked
 

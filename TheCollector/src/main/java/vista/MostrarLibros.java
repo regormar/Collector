@@ -38,9 +38,9 @@ public class MostrarLibros extends javax.swing.JDialog {
                         libro = collectorDao.selectLibroUsuario(libro);
                         librosUsuario.add(libro);
                     }
-                    if(librosUsuario.isEmpty()){
-                        throw new AlertException(AlertException.NO_TIENE_LIBROS);
-                    }
+                }
+                if(librosUsuario.isEmpty()){
+                    throw new AlertException(AlertException.NO_TIENE_LIBROS);
                 }
             }else{
                 throw new AlertException(AlertException.NO_EXISTEN_LIBROS);
@@ -52,10 +52,6 @@ public class MostrarLibros extends javax.swing.JDialog {
     
     //Funcion que actualiza los datos de la tabla.
     public void actualizarTabla() throws AlertException{
-        int fila = jTable1.getRowCount();
-        for(int x = fila-1; x>=0; x++){
-            dtm.removeRow(x);
-        }
         try {
             for(Libro libro : librosUsuario){
                 String genero = collectorDao.getNombreGeneroById(libro.getGenero());
@@ -222,6 +218,8 @@ public class MostrarLibros extends javax.swing.JDialog {
 
     private void tfCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseClicked
         dtm.setRowCount(0);
+        libros.clear();
+        librosUsuario.clear();
         this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_tfCerrarMouseClicked
 

@@ -368,7 +368,7 @@ public class CollectorDao {
         ps.setString(3, usu.getPass());
         ps.setString(4, usu.getNombre());
         ps.setString(5, usu.getApellidos());
-        ps.setInt(6, 1);
+        ps.setInt(6, usu.getTipo());
         ps.setString(7, usu.getEmail());
         ps.executeUpdate();
         ps.close();
