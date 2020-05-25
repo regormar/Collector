@@ -12,6 +12,7 @@ import modelo.Pelicula;
 import persistencia.CollectorDao;
 
 public class EditarPelicula extends javax.swing.JDialog {
+    
     private static Controlador manager;
     private static MostrarExcepciones mostrar;
     public static CollectorDao collectorDao;

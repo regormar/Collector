@@ -3,6 +3,7 @@ package manager;
 import excepciones.Excepcion;
 import excepciones.Succestion;
 import java.sql.SQLException;
+import modelo.Juego;
 import modelo.Libro;
 import modelo.Pelicula;
 import modelo.Usuario;
@@ -80,5 +81,17 @@ public class Controlador {
         }
         CollectorDao.insertarLibro(l);
         throw new Succestion(Succestion.BOOK_REGISTERED);
+    }
+    
+    //Funcion para validar el registro de un juego.
+    public static void validarJuego(Juego j) throws Excepcion, SQLException, Succestion{
+        if(j.getDesarrolladora().equals("") || j.getNombre().equals("")){
+            throw new Excepcion(Excepcion.ERROR_EMPTY_FIELDS);
+        }
+        if(CollectorDao.checkJuego(j)){
+            throw new Excepcion(Excepcion.ERROR_GAME_EXIST);
+        }
+        CollectorDao.insertarJuego(j);
+        throw new Succestion(Succestion.GAME_REGISTERED);
     }
 }

@@ -1,3 +1,4 @@
+
 package vista;
 
 import excepciones.AlertException;
@@ -7,85 +8,83 @@ import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import manager.Controlador;
-import modelo.Libro;
+import modelo.Juego;
 import persistencia.CollectorDao;
 
 
-public class AñadirLibro extends javax.swing.JDialog {
+public class EliminarJuego extends javax.swing.JDialog {
 
     private static MostrarExcepciones mostrar;
     public static CollectorDao collectorDao;
     private int mousepX;
     private int mousepY;
-    private static ArrayList<Libro> libros = new ArrayList<>();
-    private static Libro book;
-    
-    public AñadirLibro() throws AlertException {
+    private static ArrayList<Juego> juegos = new ArrayList<>();
+    private static ArrayList<Juego> juegosUsuario = new ArrayList<>();
+    private static Juego game;
+
+    public EliminarJuego() throws AlertException {
         initComponents();
+        mostrar = MostrarExcepciones.getInstace();
         actualizarComboBox();
-        mostrar = MostrarExcepciones.getInstace();   
     }
-    
-    //Funcion que actualiza los datos de los libros.
+
+    //Funcion que actualiza los datos de los juegos.
     public void actualizarComboBox() throws AlertException{
         try {
-            libroComboBox.removeAllItems();
-            libroComboBox.addItem("Selecciona un libro:");
-            libros = collectorDao.selectLibros();
-            if(!libros.isEmpty()){
-                for(Libro libro : libros){
-                    if(!collectorDao.checkLibroUsuario(libro.getId())){
-                        libroComboBox.addItem(libro.getNombre() + " - " + libro.getAutor());
-                    }
-                    if(collectorDao.getNumBooksByUser() == libros.size()){
-                        throw new AlertException(AlertException.NO_EXISTEN_MAS_LIBROS);
+            cbJuego.removeAllItems();
+            cbJuego.addItem("Selecciona un videojuego:");
+            juegos = collectorDao.selectJuegos();
+            if(!juegos.isEmpty()){
+                for(Juego juego : juegos){
+                    if(collectorDao.checkJuegoUsuario(juego.getId())){
+                        cbJuego.addItem(juego.getNombre()+ " - " + juego.getDesarrolladora());
+                        juegosUsuario.add(juego);
                     }
                 }
+                if(cbJuego.getItemCount() <= 1){
+                    throw new AlertException(AlertException.NO_TIENE_JUEGOS);
+                }
             }else{
-                throw new AlertException(AlertException.NO_EXISTEN_LIBROS);
+                throw new AlertException(AlertException.NO_EXISTEN_JUEGOS);
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-    }
+    }   
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         PanelFondo = new javax.swing.JPanel();
-        LabelLibro = new javax.swing.JLabel();
-        btnAnyadir = new javax.swing.JButton();
+        LabelVideojuego = new javax.swing.JLabel();
+        btnEliminar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         tfCerrar = new javax.swing.JLabel();
         result = new javax.swing.JLabel();
-        LabelPageNum = new javax.swing.JLabel();
-        LabelValoracion = new javax.swing.JLabel();
         PanelTitulo = new javax.swing.JPanel();
-        LabelAñadir = new javax.swing.JLabel();
+        LabelEliminar = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        libroComboBox = new javax.swing.JComboBox<>();
-        spinnerValoracion = new javax.swing.JSpinner();
-        spActualPg = new javax.swing.JSpinner();
+        cbJuego = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setUndecorated(true);
 
         PanelFondo.setBackground(new java.awt.Color(255, 255, 255));
         PanelFondo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        LabelLibro.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        LabelLibro.setText("LIBRO");
+        LabelVideojuego.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
+        LabelVideojuego.setText("VIDEOJUEGO");
 
-        btnAnyadir.setBackground(new java.awt.Color(51, 51, 51));
-        btnAnyadir.setFont(new java.awt.Font("Tiza", 0, 8)); // NOI18N
-        btnAnyadir.setForeground(new java.awt.Color(255, 255, 255));
-        btnAnyadir.setText("AÑADIR");
-        btnAnyadir.setBorder(null);
-        btnAnyadir.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminar.setBackground(new java.awt.Color(51, 51, 51));
+        btnEliminar.setFont(new java.awt.Font("Tiza", 0, 8)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminar.setText("ELIMINAR");
+        btnEliminar.setBorder(null);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnyadirActionPerformed(evt);
+                btnEliminarActionPerformed(evt);
             }
         });
 
@@ -127,18 +126,12 @@ public class AñadirLibro extends javax.swing.JDialog {
 
         result.setForeground(new java.awt.Color(255, 0, 0));
 
-        LabelPageNum.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        LabelPageNum.setText("PÁGINA ACTUAL");
-
-        LabelValoracion.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        LabelValoracion.setText("VALORACION");
-
         PanelTitulo.setBackground(new java.awt.Color(51, 51, 51));
         PanelTitulo.setForeground(new java.awt.Color(51, 51, 51));
 
-        LabelAñadir.setFont(new java.awt.Font("Tiza", 0, 24)); // NOI18N
-        LabelAñadir.setForeground(new java.awt.Color(255, 255, 255));
-        LabelAñadir.setText("ANADIR Libro");
+        LabelEliminar.setFont(new java.awt.Font("Tiza", 0, 24)); // NOI18N
+        LabelEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        LabelEliminar.setText("ELIMINAR VIDEOJUEGO");
 
         javax.swing.GroupLayout PanelTituloLayout = new javax.swing.GroupLayout(PanelTitulo);
         PanelTitulo.setLayout(PanelTituloLayout);
@@ -146,14 +139,14 @@ public class AñadirLibro extends javax.swing.JDialog {
             PanelTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTituloLayout.createSequentialGroup()
                 .addGap(56, 56, 56)
-                .addComponent(LabelAñadir)
+                .addComponent(LabelEliminar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         PanelTituloLayout.setVerticalGroup(
             PanelTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTituloLayout.createSequentialGroup()
                 .addContainerGap(30, Short.MAX_VALUE)
-                .addComponent(LabelAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(LabelEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
         );
 
@@ -168,13 +161,7 @@ public class AñadirLibro extends javax.swing.JDialog {
             }
         });
 
-        libroComboBox.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-
-        spinnerValoracion.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        spinnerValoracion.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
-
-        spActualPg.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        spActualPg.setModel(new javax.swing.SpinnerNumberModel());
+        cbJuego.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout PanelFondoLayout = new javax.swing.GroupLayout(PanelFondo);
         PanelFondo.setLayout(PanelFondoLayout);
@@ -190,20 +177,14 @@ public class AñadirLibro extends javax.swing.JDialog {
                 .addGap(43, 43, 43)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelFondoLayout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
-                        .addComponent(btnAnyadir, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(PanelFondoLayout.createSequentialGroup()
-                        .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LabelPageNum, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LabelLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LabelValoracion, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(LabelVideojuego, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(libroComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(spActualPg)
-                            .addComponent(spinnerValoracion, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE))))
+                        .addComponent(cbJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(64, 64, 64))
         );
         PanelFondoLayout.setVerticalGroup(
@@ -216,21 +197,13 @@ public class AñadirLibro extends javax.swing.JDialog {
                 .addComponent(PanelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(libroComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelPageNum, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(spActualPg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelValoracion, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(spinnerValoracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                    .addComponent(LabelVideojuego, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbJuego, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAnyadir, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27))
+                .addGap(39, 39, 39))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -247,37 +220,28 @@ public class AñadirLibro extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAnyadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnyadirActionPerformed
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         try{
-            int libro = libroComboBox.getSelectedIndex();
-            if(libro == 0){
-                throw new Excepcion(Excepcion.BOOK_INVALIDO);
+            int pelicula = cbJuego.getSelectedIndex();
+            if(pelicula == 0){
+                throw new Excepcion(Excepcion.GAME_INVALIDO);
             }
-            book = libros.get(libro);
-            int paginaActual = Integer.parseInt(spActualPg.getValue().toString());
-            if(paginaActual > book.getNumPaginas()){
-                throw new Excepcion(Excepcion.INVALID_PAGE_NUMBER);
-            }
-            int valoracion = Integer.parseInt(spinnerValoracion.getValue().toString());
-
+            int posicion = pelicula - 1;
+            game = juegosUsuario.get(posicion);
             try {
-                book.setPaginaActual(paginaActual);
-                book.setValoracion(valoracion);
-                collectorDao.insertarLibroUsuario(book);
-                throw new Succestion(Succestion.BOOK_ADDED);
+                collectorDao.eliminarJuegoUsuario(game.getId());
+                throw new Succestion(Succestion.GAME_REMOVED);
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
         } catch(Excepcion ex){
-            spActualPg.setValue(0);
-            spinnerValoracion.setValue(0);
-            libroComboBox.setSelectedIndex(0);
+            cbJuego.setSelectedIndex(0);
             result.setText(ex.getMessage());
         } catch(Succestion ex) {
             mostrar.mostrar(ex);
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
-    }//GEN-LAST:event_btnAnyadirActionPerformed
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void tfCerrarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseMoved
         jPanel4.setBackground(Color.decode("#EAEAEA"));
@@ -303,20 +267,17 @@ public class AñadirLibro extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel5MousePressed
 
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel LabelAñadir;
-    private javax.swing.JLabel LabelLibro;
-    private javax.swing.JLabel LabelPageNum;
-    private javax.swing.JLabel LabelValoracion;
+    private javax.swing.JLabel LabelEliminar;
+    private javax.swing.JLabel LabelVideojuego;
     private javax.swing.JPanel PanelFondo;
     private javax.swing.JPanel PanelTitulo;
-    private javax.swing.JButton btnAnyadir;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JComboBox<String> cbJuego;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JComboBox<String> libroComboBox;
     private javax.swing.JLabel result;
-    private javax.swing.JSpinner spActualPg;
-    private javax.swing.JSpinner spinnerValoracion;
     private javax.swing.JLabel tfCerrar;
     // End of variables declaration//GEN-END:variables
 }

@@ -16,8 +16,8 @@ public class MostrarLibros extends javax.swing.JDialog {
     public static CollectorDao collectorDao;
     private int mousepX;
     private int mousepY;
-    private static ArrayList<Libro> libros = new ArrayList<>();
-    private static ArrayList<Libro> librosUsuario = new ArrayList<>();
+    private ArrayList<Libro> libros = new ArrayList<>();
+    private ArrayList<Libro> librosUsuario = new ArrayList<>();
     private static String [] titulos = {"Nombre", "Autor", "Genero", "Numero de Páginas", "Página Actual", "Valoracion"};
     private static DefaultTableModel dtm = new DefaultTableModel(null, titulos);
 

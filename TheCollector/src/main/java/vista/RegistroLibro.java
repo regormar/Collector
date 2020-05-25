@@ -23,6 +23,8 @@ public class RegistroLibro extends javax.swing.JDialog {
 
     public RegistroLibro() {
         mostrar = MostrarExcepciones.getInstace();
+        manager = Controlador.getInstace();
+        collectorDao = CollectorDao.getInstace();
         initComponents();
         actualizarComboBox();
     }

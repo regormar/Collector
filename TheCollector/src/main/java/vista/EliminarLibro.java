@@ -14,7 +14,6 @@ import persistencia.CollectorDao;
 
 public class EliminarLibro extends javax.swing.JDialog {
 
-    private static Controlador manager;
     private static MostrarExcepciones mostrar;
     public static CollectorDao collectorDao;
     private int mousepX;
@@ -25,7 +24,6 @@ public class EliminarLibro extends javax.swing.JDialog {
     
     public EliminarLibro() throws AlertException {
         initComponents();
-        manager = Controlador.getInstace();
         mostrar = MostrarExcepciones.getInstace();
         actualizarComboBox();
     }

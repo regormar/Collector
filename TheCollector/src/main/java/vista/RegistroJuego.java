@@ -1,3 +1,4 @@
+
 package vista;
 
 import excepciones.AlertException;
@@ -6,47 +7,45 @@ import excepciones.Succestion;
 import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 import manager.Controlador;
-import modelo.Libro;
+import modelo.Juego;
 import persistencia.CollectorDao;
 
 
-public class AñadirLibro extends javax.swing.JDialog {
+public class RegistroJuego extends javax.swing.JDialog {
 
+    private static Controlador manager;
     private static MostrarExcepciones mostrar;
-    public static CollectorDao collectorDao;
+    private static CollectorDao collectorDao;
     private int mousepX;
     private int mousepY;
-    private static ArrayList<Libro> libros = new ArrayList<>();
-    private static Libro book;
     
-    public AñadirLibro() throws AlertException {
+    public RegistroJuego() {
+        mostrar = MostrarExcepciones.getInstace();
+        manager = Controlador.getInstace();
+        collectorDao = CollectorDao.getInstace();
         initComponents();
         actualizarComboBox();
-        mostrar = MostrarExcepciones.getInstace();   
     }
-    
-    //Funcion que actualiza los datos de los libros.
-    public void actualizarComboBox() throws AlertException{
+
+    //Funcion que actualiza los datos de los generos.
+    public void actualizarComboBox(){
         try {
-            libroComboBox.removeAllItems();
-            libroComboBox.addItem("Selecciona un libro:");
-            libros = collectorDao.selectLibros();
-            if(!libros.isEmpty()){
-                for(Libro libro : libros){
-                    if(!collectorDao.checkLibroUsuario(libro.getId())){
-                        libroComboBox.addItem(libro.getNombre() + " - " + libro.getAutor());
-                    }
-                    if(collectorDao.getNumBooksByUser() == libros.size()){
-                        throw new AlertException(AlertException.NO_EXISTEN_MAS_LIBROS);
-                    }
+            generoComboBox.removeAllItems();
+            generoComboBox.addItem("Selecciona el genero");
+            List<String> generos = collectorDao.selectNombreGeneros(0);
+            if(!generos.isEmpty()){
+                for(String g : generos){
+                    generoComboBox.addItem(g);
                 }
             }else{
-                throw new AlertException(AlertException.NO_EXISTEN_LIBROS);
+                throw new AlertException(AlertException.NO_EXISTEN_GENEROS);
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        }catch (AlertException ex) {            
+            mostrar.mostrar(ex);             
         }
     }
 
@@ -55,37 +54,38 @@ public class AñadirLibro extends javax.swing.JDialog {
     private void initComponents() {
 
         PanelFondo = new javax.swing.JPanel();
-        LabelLibro = new javax.swing.JLabel();
-        btnAnyadir = new javax.swing.JButton();
+        LabelNombre = new javax.swing.JLabel();
+        nombreJuego = new javax.swing.JTextField();
+        btnRegistrar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         tfCerrar = new javax.swing.JLabel();
         result = new javax.swing.JLabel();
-        LabelPageNum = new javax.swing.JLabel();
-        LabelValoracion = new javax.swing.JLabel();
+        LabelAutor = new javax.swing.JLabel();
+        desarrolladora = new javax.swing.JTextField();
         PanelTitulo = new javax.swing.JPanel();
-        LabelAñadir = new javax.swing.JLabel();
+        LabelRegistro = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        libroComboBox = new javax.swing.JComboBox<>();
-        spinnerValoracion = new javax.swing.JSpinner();
-        spActualPg = new javax.swing.JSpinner();
+        LabelGenero = new javax.swing.JLabel();
+        generoComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setUndecorated(true);
 
         PanelFondo.setBackground(new java.awt.Color(255, 255, 255));
         PanelFondo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        LabelLibro.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        LabelLibro.setText("LIBRO");
+        LabelNombre.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
+        LabelNombre.setText("NOMBRE");
 
-        btnAnyadir.setBackground(new java.awt.Color(51, 51, 51));
-        btnAnyadir.setFont(new java.awt.Font("Tiza", 0, 8)); // NOI18N
-        btnAnyadir.setForeground(new java.awt.Color(255, 255, 255));
-        btnAnyadir.setText("AÑADIR");
-        btnAnyadir.setBorder(null);
-        btnAnyadir.addActionListener(new java.awt.event.ActionListener() {
+        btnRegistrar.setBackground(new java.awt.Color(51, 51, 51));
+        btnRegistrar.setFont(new java.awt.Font("Tiza", 0, 8)); // NOI18N
+        btnRegistrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegistrar.setText("REGISTRAR");
+        btnRegistrar.setBorder(null);
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnyadirActionPerformed(evt);
+                btnRegistrarActionPerformed(evt);
             }
         });
 
@@ -127,18 +127,15 @@ public class AñadirLibro extends javax.swing.JDialog {
 
         result.setForeground(new java.awt.Color(255, 0, 0));
 
-        LabelPageNum.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        LabelPageNum.setText("PÁGINA ACTUAL");
-
-        LabelValoracion.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        LabelValoracion.setText("VALORACION");
+        LabelAutor.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
+        LabelAutor.setText("DESARROLLADORA");
 
         PanelTitulo.setBackground(new java.awt.Color(51, 51, 51));
         PanelTitulo.setForeground(new java.awt.Color(51, 51, 51));
 
-        LabelAñadir.setFont(new java.awt.Font("Tiza", 0, 24)); // NOI18N
-        LabelAñadir.setForeground(new java.awt.Color(255, 255, 255));
-        LabelAñadir.setText("ANADIR Libro");
+        LabelRegistro.setFont(new java.awt.Font("Tiza", 0, 24)); // NOI18N
+        LabelRegistro.setForeground(new java.awt.Color(255, 255, 255));
+        LabelRegistro.setText("REGISTRO Videojuego");
 
         javax.swing.GroupLayout PanelTituloLayout = new javax.swing.GroupLayout(PanelTitulo);
         PanelTitulo.setLayout(PanelTituloLayout);
@@ -146,14 +143,14 @@ public class AñadirLibro extends javax.swing.JDialog {
             PanelTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTituloLayout.createSequentialGroup()
                 .addGap(56, 56, 56)
-                .addComponent(LabelAñadir)
+                .addComponent(LabelRegistro)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         PanelTituloLayout.setVerticalGroup(
             PanelTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTituloLayout.createSequentialGroup()
                 .addContainerGap(30, Short.MAX_VALUE)
-                .addComponent(LabelAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(LabelRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
         );
 
@@ -168,13 +165,10 @@ public class AñadirLibro extends javax.swing.JDialog {
             }
         });
 
-        libroComboBox.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        LabelGenero.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
+        LabelGenero.setText("GENERO");
 
-        spinnerValoracion.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        spinnerValoracion.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
-
-        spActualPg.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        spActualPg.setModel(new javax.swing.SpinnerNumberModel());
+        generoComboBox.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout PanelFondoLayout = new javax.swing.GroupLayout(PanelFondo);
         PanelFondo.setLayout(PanelFondoLayout);
@@ -187,24 +181,23 @@ public class AñadirLibro extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelFondoLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
+                .addGap(69, 69, 69)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelFondoLayout.createSequentialGroup()
-                        .addGap(26, 26, 26)
                         .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
-                        .addComponent(btnAnyadir, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                        .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(PanelFondoLayout.createSequentialGroup()
-                        .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LabelPageNum, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LabelLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LabelValoracion, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(LabelAutor, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+                            .addComponent(LabelNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(LabelGenero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(libroComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(spActualPg)
-                            .addComponent(spinnerValoracion, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE))))
-                .addGap(64, 64, 64))
+                            .addComponent(generoComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(desarrolladora)
+                            .addComponent(nombreJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(92, 92, 92))
         );
         PanelFondoLayout.setVerticalGroup(
             PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,23 +207,27 @@ public class AñadirLibro extends javax.swing.JDialog {
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PanelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addGap(30, 30, 30)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(libroComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(LabelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nombreJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelPageNum, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(spActualPg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(LabelAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(desarrolladora, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelValoracion, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(spinnerValoracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                    .addComponent(LabelGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(generoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAnyadir, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27))
+                    .addGroup(PanelFondoLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17))
+                    .addGroup(PanelFondoLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(23, 23, 23))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -241,43 +238,35 @@ public class AñadirLibro extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PanelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(PanelFondo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAnyadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnyadirActionPerformed
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         try{
-            int libro = libroComboBox.getSelectedIndex();
-            if(libro == 0){
-                throw new Excepcion(Excepcion.BOOK_INVALIDO);
+            if(generoComboBox.getSelectedIndex() == 0){
+                throw new Excepcion(Excepcion.ERROR_UNSELECTED_GENRE);
             }
-            book = libros.get(libro);
-            int paginaActual = Integer.parseInt(spActualPg.getValue().toString());
-            if(paginaActual > book.getNumPaginas()){
-                throw new Excepcion(Excepcion.INVALID_PAGE_NUMBER);
-            }
-            int valoracion = Integer.parseInt(spinnerValoracion.getValue().toString());
-
+            String nombre = nombreJuego.getText();
+            String creator = desarrolladora.getText();
+            String genero = (String) generoComboBox.getSelectedItem();
             try {
-                book.setPaginaActual(paginaActual);
-                book.setValoracion(valoracion);
-                collectorDao.insertarLibroUsuario(book);
-                throw new Succestion(Succestion.BOOK_ADDED);
+                int id = collectorDao.getIdGeneroByName(genero);
+                Juego juego = new Juego(creator, nombre, id);
+                manager.validarJuego(juego);
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
         } catch(Excepcion ex){
-            spActualPg.setValue(0);
-            spinnerValoracion.setValue(0);
-            libroComboBox.setSelectedIndex(0);
+            generoComboBox.setSelectedIndex(0);
             result.setText(ex.getMessage());
-        } catch(Succestion ex) {
+        } catch (Succestion ex) {
             mostrar.mostrar(ex);
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
-    }//GEN-LAST:event_btnAnyadirActionPerformed
+    }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void tfCerrarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseMoved
         jPanel4.setBackground(Color.decode("#EAEAEA"));
@@ -304,19 +293,19 @@ public class AñadirLibro extends javax.swing.JDialog {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel LabelAñadir;
-    private javax.swing.JLabel LabelLibro;
-    private javax.swing.JLabel LabelPageNum;
-    private javax.swing.JLabel LabelValoracion;
+    private javax.swing.JLabel LabelAutor;
+    private javax.swing.JLabel LabelGenero;
+    private javax.swing.JLabel LabelNombre;
+    private javax.swing.JLabel LabelRegistro;
     private javax.swing.JPanel PanelFondo;
     private javax.swing.JPanel PanelTitulo;
-    private javax.swing.JButton btnAnyadir;
+    private javax.swing.JButton btnRegistrar;
+    private javax.swing.JTextField desarrolladora;
+    private javax.swing.JComboBox<String> generoComboBox;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JComboBox<String> libroComboBox;
+    private javax.swing.JTextField nombreJuego;
     private javax.swing.JLabel result;
-    private javax.swing.JSpinner spActualPg;
-    private javax.swing.JSpinner spinnerValoracion;
     private javax.swing.JLabel tfCerrar;
     // End of variables declaration//GEN-END:variables
 }

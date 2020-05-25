@@ -10,6 +10,9 @@ public class Juego extends Miscelanea {
         this.desarrolladora = desarrolladora;
     } 
     
+    public Juego(){        
+    }
+    
     public String getDesarrolladora() {
         return desarrolladora;
     }

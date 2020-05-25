@@ -261,8 +261,7 @@ public class AñadirPelicula extends javax.swing.JDialog {
             if(pelicula == 0){
                 throw new Excepcion(Excepcion.PELICULA_INVALIDA);
             }
-            int posicion = pelicula - 1;
-            peli = peliculasUsuario.get(posicion);
+            peli = peliculasUsuario.get(pelicula);
             int minuto = Integer.parseInt(spinnerMinuto.getValue().toString());
             if(minuto > peli.getDuracion()){
                 throw new Excepcion(Excepcion.INVALID_MINUTE_NUMBER);

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import modelo.Juego;
 import modelo.Libro;
 import modelo.Pelicula;
 import modelo.Usuario;
@@ -38,6 +39,20 @@ public class CollectorDao {
     //Función que devuelve el número de libros que tiene un usuario.
     public static int getNumBooksByUser() throws SQLException {
         String select = "select count(username) as veces from librousuario where username ='" + usuActual + "'";
+        int veces = 0;
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(select);
+        if (rs.next()) {
+            veces = rs.getInt("veces");
+        }
+        rs.close() ;
+        st.close();
+        return veces;
+    }
+    
+    //Función que devuelve el número de libros que tiene un usuario.
+    public static int getNumGamesByUser() throws SQLException {
+        String select = "select count(username) as veces from videojuegousuario where username ='" + usuActual + "'";
         int veces = 0;
         Statement st = conexion.createStatement();
         ResultSet rs = st.executeQuery(select);
@@ -111,6 +126,19 @@ public class CollectorDao {
         return peli;
     }
     
+    //Funcion que selecciona los datos del juego del usuario.
+    public static Juego selectJuegoUsuario(Juego game) throws SQLException {
+        String query = "select * from videojuegousuario where username='" + usuActual + "' and idvideojuego = '" + game.getId() + "'";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        while (rs.next()) {
+            game.setValoracion(rs.getInt("valoracion"));
+        }
+        rs.close();
+        st.close();
+        return game;
+    }
+    
     //Funcion que selecciona los datos del libro del usuario.
     public static Libro selectLibroUsuario(Libro book) throws SQLException {
         String query = "select * from librousuario where username='" + usuActual + "' and idlibro = '" + book.getId() + "'";
@@ -145,7 +173,26 @@ public class CollectorDao {
         return activity;
     }
     
-    //Funcion que selecciona todos los libros registrados en la bbdd.
+    //Funcion que selecciona todos los juegos registrados en la bbdd.
+    public static ArrayList<Juego> selectJuegos() throws SQLException {
+        String query = "select * from videojuego";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        ArrayList<Juego> activity = new ArrayList<>();
+        while (rs.next()) {
+            Juego j = new Juego();
+            j.setId(rs.getInt("idvideojuego"));
+            j.setNombre(rs.getString("nombrevideojuego"));
+            j.setDesarrolladora(rs.getString("desarrolladora"));
+            j.setGenero(rs.getInt("idgenero"));
+            activity.add(j);
+        }
+        rs.close();
+        st.close();
+        return activity;
+    }
+    
+    //Funcion que selecciona todos los juegos registrados en la bbdd.
     public static ArrayList<Libro> selectLibros() throws SQLException {
         String query = "select * from libro";
         Statement st = conexion.createStatement();
@@ -173,6 +220,17 @@ public class CollectorDao {
         ps.setInt(2, p.getValoracion());
         ps.setString(3, usuActual);
         ps.setInt(4, p.getId());
+        ps.executeUpdate();
+        ps.close();
+    }
+    
+    //Funcion para modificar en la bbdd el juego de un usuario.
+    public static void modificarJuegoUsuario(Juego j) throws SQLException{
+        String update = "update videojuegousuario set valoracion=? where username=? and idvideojuego=?";
+        PreparedStatement ps = conexion.prepareStatement(update);
+        ps.setInt(1, j.getValoracion());
+        ps.setString(2, usuActual);
+        ps.setInt(3, j.getId());
         ps.executeUpdate();
         ps.close();
     }
@@ -213,6 +271,17 @@ public class CollectorDao {
         ps.close();
     }
     
+    //Funcion para insertar un juego en la bbdd.
+    public static void insertarJuegoUsuario(Juego j) throws SQLException {
+        String insert = "insert into videojuegousuario values (?, ?, ?);";
+        PreparedStatement ps = conexion.prepareStatement(insert);
+        ps.setString(1, usuActual);
+        ps.setInt(2, j.getId());
+        ps.setInt(3, j.getValoracion());
+        ps.executeUpdate();
+        ps.close();
+    }
+    
     //Funcion para insertar una pelicula en la bbdd.
     public static void insertarPelicula(Pelicula p) throws SQLException {
         String insert = "insert into pelicula values (?, ?, ?, ?, ?);";
@@ -235,6 +304,18 @@ public class CollectorDao {
         ps.setString(3, l.getAutor());
         ps.setInt(4, l.getNumPaginas());
         ps.setInt(5, l.getGenero());
+        ps.executeUpdate();
+        ps.close();
+    }
+    
+    //Funcion para insertar un juego en la bbdd.
+    public static void insertarJuego(Juego j) throws SQLException {
+        String insert = "insert into videojuego values (?, ?, ?, ?);";
+        PreparedStatement ps = conexion.prepareStatement(insert);
+        ps.setString(1, null);
+        ps.setString(2, j.getNombre());
+        ps.setString(3, j.getDesarrolladora());
+        ps.setInt(4, j.getGenero());
         ps.executeUpdate();
         ps.close();
     }
@@ -269,10 +350,32 @@ public class CollectorDao {
         st.executeUpdate(delete);
         st.close();
     }
+    
+    //Función que borra un juego.
+    public static void eliminarJuegoUsuario(int id) throws SQLException {
+        String delete = "delete from videojuegousuario where username='" + usuActual + "' and idvideojuego = '" + id + "'";
+        Statement st = conexion.createStatement();
+        st.executeUpdate(delete);
+        st.close();
+    }
 
     //Funcion para comprobar si el usuario tiene una pelicula.
     public static boolean checkPeliculaUsuario(int id) throws SQLException {
         String select = "select * from peliculausuario where username ='" + usuActual + "'and idpelicula = '" + id + "'";
+        Statement statment = conexion.createStatement();
+        ResultSet result = statment.executeQuery(select);
+        boolean existe = false;
+        if (result.next()) {
+            existe = true;
+        }
+        result.close();
+        statment.close();
+        return existe;
+    }
+    
+    //Funcion para comprobar si el usuario tiene un juego.
+    public static boolean checkJuegoUsuario(int id) throws SQLException {
+        String select = "select * from videojuegousuario where username ='" + usuActual + "'and idvideojuego = '" + id + "'";
         Statement statment = conexion.createStatement();
         ResultSet result = statment.executeQuery(select);
         boolean existe = false;
@@ -301,6 +404,20 @@ public class CollectorDao {
     //Funcion para comprobar si existe una pelicula en la bbdd con el mismo nombre y director.
     public static boolean checkLibro(Libro l) throws SQLException {
         String select = "select * from libro where nombrelibro ='" + l.getNombre() + "'and autor = '" + l.getAutor()+ "'";
+        Statement statment = conexion.createStatement();
+        ResultSet result = statment.executeQuery(select);
+        boolean existe = false;
+        if (result.next()) {
+            existe = true;
+        }
+        result.close();
+        statment.close();
+        return existe;
+    }
+    
+    //Funcion para comprobar si existe un juego en la bbdd con el mismo nombre y desarolladora.
+    public static boolean checkJuego(Juego j) throws SQLException {
+        String select = "select * from videojuego where nombrevideojuego ='" + j.getNombre() + "'and desarrolladora = '" + j.getDesarrolladora()+ "'";
         Statement statment = conexion.createStatement();
         ResultSet result = statment.executeQuery(select);
         boolean existe = false;

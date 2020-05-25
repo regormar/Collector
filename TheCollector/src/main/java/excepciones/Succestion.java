@@ -15,6 +15,10 @@ public class Succestion extends Exception{
     public static final int MOVIE_EDITED = 6;
     public static final int BOOK_REMOVED = 7;
     public static final int BOOK_EDITED = 8;
+    public static final int GAME_REGISTERED = 9;
+    public static final int GAME_EDITED = 10;
+    public static final int GAME_ADDED = 11;
+    public static final int GAME_REMOVED = 12;
     
     private int code;
 
@@ -27,7 +31,11 @@ public class Succestion extends Exception{
         "¡Libro añadido con éxito!",
         "¡Película editada con éxito!",
         "¡Libro eliminado con éxito!",
-        "¡Libro editado con éxito!"
+        "¡Libro editado con éxito!",
+        "¡Videojuego registrado con éxito!",
+        "¡Videojuego editado con éxito!",
+        "¡Videojuego añadido con éxito!",
+        "¡Videojuego eliminado con éxito!"
     );
 
     public Succestion(int code) {
