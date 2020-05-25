@@ -24,14 +24,7 @@ public class MostrarExcepciones {
         JDialog dialogException = optionPane.createDialog("Info");
         dialogException.setAlwaysOnTop(true);
         dialogException.setVisible(true);       
-    }
-    
-    public void mostrar(Excepcion ex){
-        optionPane = new JOptionPane(ex.getMessage(), JOptionPane.ERROR_MESSAGE);
-        JDialog dialogException = optionPane.createDialog("Error");
-        dialogException.setAlwaysOnTop(true);
-        dialogException.setVisible(true);
-    }
+    }   
     
     public void mostrar(AlertException ex){
         optionPane = new JOptionPane(ex.getMessage(), JOptionPane.WARNING_MESSAGE);
