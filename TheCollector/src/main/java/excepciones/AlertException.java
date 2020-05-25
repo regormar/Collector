@@ -10,6 +10,7 @@ public class AlertException extends Exception{
         public static final int NO_EXISTEN_LIBROS = 3;
         public static final int NO_EXISTEN_MAS_LIBROS = 4;
         public static final int NO_EXISTEN_MAS_PELICULAS = 5;
+        public static final int NO_TIENE_LIBROS = 2;
 
     private int code;
 
@@ -19,7 +20,8 @@ public class AlertException extends Exception{
         "No tienes películas añadidas",
         "No existen libros",
         "No existen más libros para añadir",
-        "No existen más películas para añadir"
+        "No existen más películas para añadir",
+        "No tienes libros añadidos"
     );
 
     public AlertException(int code) {

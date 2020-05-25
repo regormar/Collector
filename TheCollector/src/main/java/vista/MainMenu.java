@@ -535,7 +535,9 @@ public class MainMenu extends javax.swing.JFrame {
         try {
             switch(lblTipo.getText()){
                 case "LIBROS":
-
+                    EliminarLibro eliminarLibro = new EliminarLibro();
+                    eliminarLibro.setLocationRelativeTo(null);
+                    eliminarLibro.setVisible(true);
                     break;
                 case "VIDEOJUEGOS":
 

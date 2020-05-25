@@ -228,9 +228,17 @@ public class CollectorDao {
         ps.close();
     }
     
-    // Función que borra una pelicula.
+    //Función que borra una pelicula.
     public static void eliminarPeliculaUsuario(int id) throws SQLException {
         String delete = "delete from peliculausuario where username='" + usuActual + "' and idpelicula = '" + id + "'";
+        Statement st = conexion.createStatement();
+        st.executeUpdate(delete);
+        st.close();
+    }
+    
+    //Función que borra un libro.
+    public static void eliminarLibroUsuario(int id) throws SQLException {
+        String delete = "delete from librousuario where username='" + usuActual + "' and idlibro = '" + id + "'";
         Statement st = conexion.createStatement();
         st.executeUpdate(delete);
         st.close();

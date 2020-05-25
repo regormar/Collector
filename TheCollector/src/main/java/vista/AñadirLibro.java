@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import manager.Controlador;
 import modelo.Libro;
-import modelo.Pelicula;
 import persistencia.CollectorDao;
 
 

@@ -71,6 +71,7 @@ public class RegistroPelicula extends javax.swing.JDialog {
         spinnerDuracion = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setUndecorated(true);
 
         PanelFondo.setBackground(new java.awt.Color(255, 255, 255));
