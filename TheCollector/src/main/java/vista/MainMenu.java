@@ -531,7 +531,11 @@ public class MainMenu extends javax.swing.JFrame {
                     break;
                 case "SERIES":
 
-                    break;              
+                    break;  
+                default:
+                    Registro registro = new Registro();
+                    registro.setLocationRelativeTo(null);
+                    registro.setVisible(true);
             }
         }catch (AlertException ex) { 
             mostrar.mostrar(ex);             
