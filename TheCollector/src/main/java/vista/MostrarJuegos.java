@@ -1,3 +1,4 @@
+
 package vista;
 
 import excepciones.AlertException;
@@ -6,44 +7,42 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-import modelo.Libro;
+import modelo.Juego;
 import persistencia.CollectorDao;
 
 
-public class MostrarLibros extends javax.swing.JDialog {
+public class MostrarJuegos extends javax.swing.JDialog {
 
-    
     public static CollectorDao collectorDao;
     private int mousepX;
     private int mousepY;
-    private ArrayList<Libro> libros = new ArrayList<>();
-    private ArrayList<Libro> librosUsuario = new ArrayList<>();
-    private static String [] titulos = {"Nombre", "Autor", "Género", "Número de Páginas", "Página Actual", "Valoración"};
+    private ArrayList<Juego> juegos = new ArrayList<>();
+    private ArrayList<Juego> juegosUsuario = new ArrayList<>();
+    private static String [] titulos = {"Nombre", "Desarrolladora", "Género", "Valoración"};
     private static DefaultTableModel dtm = new DefaultTableModel(null, titulos);
-
-    public MostrarLibros() throws AlertException {
+    
+    public MostrarJuegos() throws AlertException {
         initComponents();
         actualizarDatos();
         actualizarTabla();
     }
 
-    
     //Funcion que actualiza los datos de los libros.
     public void actualizarDatos() throws AlertException{
         try {
-            libros = collectorDao.selectLibros();
-            if(!libros.isEmpty()){
-                for(Libro libro : libros){
-                    if(collectorDao.checkLibroUsuario(libro.getId())){
-                        libro = collectorDao.selectLibroUsuario(libro);
-                        librosUsuario.add(libro);
+            juegos = collectorDao.selectJuegos();
+            if(!juegos.isEmpty()){
+                for(Juego juego : juegos){
+                    if(collectorDao.checkJuegoUsuario(juego.getId())){
+                        juego = collectorDao.selectJuegoUsuario(juego);
+                        juegosUsuario.add(juego);
                     }
-                    if(librosUsuario.isEmpty()){
-                        throw new AlertException(AlertException.NO_TIENE_LIBROS);
+                    if(juegosUsuario.isEmpty()){
+                        throw new AlertException(AlertException.NO_TIENE_JUEGOS);
                     }
                 }
             }else{
-                throw new AlertException(AlertException.NO_EXISTEN_LIBROS);
+                throw new AlertException(AlertException.NO_EXISTEN_JUEGOS);
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -57,12 +56,10 @@ public class MostrarLibros extends javax.swing.JDialog {
             dtm.removeRow(x);
         }
         try {
-            for(Libro libro : librosUsuario){
-                String genero = collectorDao.getNombreGeneroById(libro.getGenero());
-                String numPaginas = Integer.toString (libro.getNumPaginas());
-                String pagActual = Integer.toString (libro.getPaginaActual());
-                String valoracion = Integer.toString (libro.getValoracion());
-                String [] filas = {libro.getNombre(), libro.getAutor(), genero, numPaginas, pagActual, valoracion};
+            for(Juego juego : juegosUsuario){
+                String genero = collectorDao.getNombreGeneroById(juego.getGenero());
+                String valoracion = Integer.toString (juego.getValoracion());
+                String [] filas = {juego.getNombre(), juego.getDesarrolladora(), genero, valoracion};
                 dtm.addRow(filas);
             }
             jTable1.setModel(dtm);
@@ -70,7 +67,7 @@ public class MostrarLibros extends javax.swing.JDialog {
             System.out.println(ex.getMessage());
         }
     }
-  
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -186,7 +183,7 @@ public class MostrarLibros extends javax.swing.JDialog {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(PanelFondoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 855, Short.MAX_VALUE)
                 .addContainerGap())
         );
         PanelFondoLayout.setVerticalGroup(
@@ -198,7 +195,7 @@ public class MostrarLibros extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PanelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -206,11 +203,13 @@ public class MostrarLibros extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PanelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(PanelFondo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PanelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(PanelFondo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();

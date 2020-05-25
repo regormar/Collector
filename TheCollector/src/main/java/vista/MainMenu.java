@@ -60,7 +60,7 @@ public class MainMenu extends javax.swing.JFrame {
         btnAnadir = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
-        btnEliminar1 = new javax.swing.JButton();
+        btnMostrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -328,13 +328,13 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        btnEliminar1.setBackground(new java.awt.Color(255, 255, 255));
-        btnEliminar1.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        btnEliminar1.setText("Mostrar");
-        btnEliminar1.setBorder(null);
-        btnEliminar1.addActionListener(new java.awt.event.ActionListener() {
+        btnMostrar.setBackground(new java.awt.Color(255, 255, 255));
+        btnMostrar.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
+        btnMostrar.setText("Mostrar");
+        btnMostrar.setBorder(null);
+        btnMostrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminar1ActionPerformed(evt);
+                btnMostrarActionPerformed(evt);
             }
         });
 
@@ -354,7 +354,7 @@ public class MainMenu extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnEliminar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnMostrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnAnadir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
@@ -368,7 +368,7 @@ public class MainMenu extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnEliminar1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnMostrar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnAnadir, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -635,7 +635,7 @@ public class MainMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
-    private void btnEliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar1ActionPerformed
+    private void btnMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarActionPerformed
         try {
             switch(lblTipo.getText()){
                 case "LIBROS":
@@ -644,7 +644,9 @@ public class MainMenu extends javax.swing.JFrame {
                     mostrarLibros.setVisible(true);
                     break;
                 case "VIDEOJUEGOS":
-
+                    MostrarJuegos mostrarJuegos = new MostrarJuegos();
+                    mostrarJuegos.setLocationRelativeTo(null);
+                    mostrarJuegos.setVisible(true);
                     break;
                 case "PELÍCULAS":
                     MostrarPeliculas mostrarPeliculas = new MostrarPeliculas();
@@ -658,7 +660,7 @@ public class MainMenu extends javax.swing.JFrame {
         }catch (AlertException ex) { 
             mostrar.mostrar(ex);             
         }
-    }//GEN-LAST:event_btnEliminar1ActionPerformed
+    }//GEN-LAST:event_btnMostrarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -667,9 +669,9 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnCrear;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnEliminar1;
     private javax.swing.JButton btnJuegos;
     private javax.swing.JButton btnLibros;
+    private javax.swing.JButton btnMostrar;
     private javax.swing.JButton btnPelículas;
     private javax.swing.JButton btnSeries;
     private javax.swing.JButton btnUsuario;
