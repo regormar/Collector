@@ -20,6 +20,10 @@ public class Registro extends javax.swing.JDialog {
     
     public Registro(){
         initComponents();
+        if(manager.currentUser == null){
+            cbTipo.setVisible(false);
+            LabelTipo.setVisible(false);
+        }
         manager = Controlador.getInstace();
         mostrar = MostrarExcepciones.getInstace();
     }
