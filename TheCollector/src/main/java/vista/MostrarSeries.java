@@ -1,50 +1,68 @@
 package vista;
 
 import excepciones.AlertException;
-import excepciones.Excepcion;
-import excepciones.Succestion;
 import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import modelo.Pelicula;
+import javax.swing.table.DefaultTableModel;
+import modelo.Serie;
 import persistencia.CollectorDao;
 
-public class EliminarPelicula extends javax.swing.JDialog {
+public class MostrarSeries extends javax.swing.JDialog {
 
-    private static MostrarExcepciones mostrar;
     public static CollectorDao collectorDao;
     private int mousepX;
     private int mousepY;
-    private static ArrayList<Pelicula> peliculas = new ArrayList<>();
-    private static ArrayList<Pelicula> peliculasUsuario = new ArrayList<>();
-    private static Pelicula peli;
+    private static ArrayList<Serie> series = new ArrayList<>();
+    private static ArrayList<Serie> seriesUsuario = new ArrayList<>();
+    private static String [] titulos = {"Nombre", "Director/a", "Genero", "Total Temporadas", "Total Capitulos", "Duracion Capitulo", "Temporada Actual", "Capitulo Actual", "Minuto Actual", "Valoracion"};
+    private static DefaultTableModel dtm = new DefaultTableModel(null, titulos);
     
-    public EliminarPelicula() throws AlertException {
+    public MostrarSeries() throws AlertException {
         initComponents();
-        mostrar = MostrarExcepciones.getInstace();
-        actualizarComboBox();
+        actualizarDatos();
+        actualizarTabla();
     }
     
-    //Funcion que actualiza los datos de las peliculas.
-    public void actualizarComboBox() throws AlertException{
+    //Funcion que actualiza los datos de las series.
+    public void actualizarDatos() throws AlertException{
         try {
-            peliculaComboBox.removeAllItems();
-            peliculaComboBox.addItem("Selecciona una pelicula:");
-            peliculas = collectorDao.selectPeliculas();
-            if(!peliculas.isEmpty()){
-                for(Pelicula pelicula : peliculas){
-                    if(collectorDao.checkPeliculaUsuario(pelicula.getId())){
-                        peliculaComboBox.addItem(pelicula.getNombre()+ " - " + pelicula.getDireccion());
-                        peliculasUsuario.add(pelicula);
+            series = collectorDao.selectSerie();
+            if(!series.isEmpty()){
+                for(Serie serie : series){
+                    if(collectorDao.checkSerieUsuario(serie.getId())){
+                        serie = collectorDao.selectSerieUsuario(serie);
+                        seriesUsuario.add(serie);
                     }
                 }
-                if(peliculaComboBox.getItemCount() <= 1){
-                    throw new AlertException(AlertException.NO_TIENE_PELICULAS);
+                if(seriesUsuario.isEmpty()){
+                    throw new AlertException(AlertException.NO_TIENE_SERIES);
                 }
             }else{
-                throw new AlertException(AlertException.NO_EXISTEN_PELICULAS);
+                throw new AlertException(AlertException.NO_EXISTEN_SERIES);
             }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    //Funcion que actualiza los datos de la tabla.
+    public void actualizarTabla() throws AlertException{
+        try {
+            for(Serie serie : seriesUsuario){
+                String genero = collectorDao.getNombreGeneroById(serie.getGenero());
+                String numTemporadas = Integer.toString (serie.getNumTemporadas());
+                String temporada = Integer.toString (serie.getTemporada());
+                String numCapitulos = Integer.toString (serie.getNumCapitulos());
+                String capitulo = Integer.toString (serie.getCapitulo());
+                String duracion = Integer.toString (serie.getDuracionCapitulo());
+                String minuto = Integer.toString (serie.getMinuto());
+                String valoracion = Integer.toString (serie.getValoracion());
+                String [] filas = {serie.getNombre(), serie.getDireccion(), genero, numTemporadas, numCapitulos, duracion, temporada, capitulo, minuto, valoracion};
+                dtm.addRow(filas);
+            }
+            jTable1.setModel(dtm);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -60,36 +78,19 @@ public class EliminarPelicula extends javax.swing.JDialog {
     private void initComponents() {
 
         PanelFondo = new javax.swing.JPanel();
-        LabelPelicula = new javax.swing.JLabel();
-        btnEliminar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         tfCerrar = new javax.swing.JLabel();
-        result = new javax.swing.JLabel();
         PanelTitulo = new javax.swing.JPanel();
-        LabelEliminar = new javax.swing.JLabel();
+        LabelMostrar = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        peliculaComboBox = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setUndecorated(true);
 
         PanelFondo.setBackground(new java.awt.Color(255, 255, 255));
         PanelFondo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        LabelPelicula.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        LabelPelicula.setText("PELICULA");
-
-        btnEliminar.setBackground(new java.awt.Color(51, 51, 51));
-        btnEliminar.setFont(new java.awt.Font("Tiza", 0, 8)); // NOI18N
-        btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
-        btnEliminar.setText("ELIMINAR");
-        btnEliminar.setBorder(null);
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -127,14 +128,12 @@ public class EliminarPelicula extends javax.swing.JDialog {
                 .addGap(0, 8, Short.MAX_VALUE))
         );
 
-        result.setForeground(new java.awt.Color(255, 0, 0));
-
         PanelTitulo.setBackground(new java.awt.Color(51, 51, 51));
         PanelTitulo.setForeground(new java.awt.Color(51, 51, 51));
 
-        LabelEliminar.setFont(new java.awt.Font("Tiza", 0, 24)); // NOI18N
-        LabelEliminar.setForeground(new java.awt.Color(255, 255, 255));
-        LabelEliminar.setText("ELIMINAR PELICULA");
+        LabelMostrar.setFont(new java.awt.Font("Tiza", 0, 24)); // NOI18N
+        LabelMostrar.setForeground(new java.awt.Color(255, 255, 255));
+        LabelMostrar.setText("MOSTRAR SERIES");
 
         javax.swing.GroupLayout PanelTituloLayout = new javax.swing.GroupLayout(PanelTitulo);
         PanelTitulo.setLayout(PanelTituloLayout);
@@ -142,14 +141,14 @@ public class EliminarPelicula extends javax.swing.JDialog {
             PanelTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTituloLayout.createSequentialGroup()
                 .addGap(56, 56, 56)
-                .addComponent(LabelEliminar)
+                .addComponent(LabelMostrar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         PanelTituloLayout.setVerticalGroup(
             PanelTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTituloLayout.createSequentialGroup()
                 .addContainerGap(30, Short.MAX_VALUE)
-                .addComponent(LabelEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(LabelMostrar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
         );
 
@@ -164,7 +163,17 @@ public class EliminarPelicula extends javax.swing.JDialog {
             }
         });
 
-        peliculaComboBox.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jTable1.setRowHeight(30);
+        jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout PanelFondoLayout = new javax.swing.GroupLayout(PanelFondo);
         PanelFondo.setLayout(PanelFondoLayout);
@@ -176,18 +185,10 @@ public class EliminarPelicula extends javax.swing.JDialog {
                 .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelFondoLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelFondoLayout.createSequentialGroup()
-                        .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(PanelFondoLayout.createSequentialGroup()
-                        .addComponent(LabelPelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(peliculaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(64, 64, 64))
+            .addGroup(PanelFondoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1095, Short.MAX_VALUE)
+                .addContainerGap())
         );
         PanelFondoLayout.setVerticalGroup(
             PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,15 +198,9 @@ public class EliminarPelicula extends javax.swing.JDialog {
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PanelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelPelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(peliculaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -222,38 +217,14 @@ public class EliminarPelicula extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        try{
-            int pelicula = peliculaComboBox.getSelectedIndex();
-            if(pelicula == 0){
-                throw new Excepcion(Excepcion.PELICULA_INVALIDA);
-            }
-            int posicion = pelicula - 1;
-            peli = peliculasUsuario.get(posicion);
-            try {
-                collectorDao.eliminarPeliculaUsuario(peli.getId());
-                throw new Succestion(Succestion.MOVIE_REMOVED);
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-        } catch(Excepcion ex){
-            peliculaComboBox.setSelectedIndex(0);
-            result.setText(ex.getMessage());
-        } catch(Succestion ex) {
-            peliculas.clear();
-            peliculasUsuario.clear();
-            mostrar.mostrar(ex);
-            this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-        }
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
     private void tfCerrarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseMoved
         jPanel4.setBackground(Color.decode("#EAEAEA"));
     }//GEN-LAST:event_tfCerrarMouseMoved
 
     private void tfCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseClicked
-        peliculas.clear();
-        peliculasUsuario.clear();
+        dtm.setRowCount(0);
+        series.clear();
+        seriesUsuario.clear();
         this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_tfCerrarMouseClicked
 
@@ -273,15 +244,13 @@ public class EliminarPelicula extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel5MousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel LabelEliminar;
-    private javax.swing.JLabel LabelPelicula;
+    private javax.swing.JLabel LabelMostrar;
     private javax.swing.JPanel PanelFondo;
     private javax.swing.JPanel PanelTitulo;
-    private javax.swing.JButton btnEliminar;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JComboBox<String> peliculaComboBox;
-    private javax.swing.JLabel result;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel tfCerrar;
     // End of variables declaration//GEN-END:variables
 }

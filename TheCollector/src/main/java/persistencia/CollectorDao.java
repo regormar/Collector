@@ -12,6 +12,7 @@ import java.util.List;
 import modelo.Juego;
 import modelo.Libro;
 import modelo.Pelicula;
+import modelo.Serie;
 import modelo.Usuario;
 
 /**
@@ -22,7 +23,7 @@ public class CollectorDao {
     
     public static Connection conexion;
     private static CollectorDao instance;
-    private static String usuActual;
+    public static String usuActual;
     
     public static CollectorDao getInstace() {
         if (instance == null) {
@@ -112,6 +113,22 @@ public class CollectorDao {
         return generos;
     }
     
+    //Funcion que selecciona los datos de la serie del usuario.
+    public static Serie selectSerieUsuario(Serie serie) throws SQLException {
+        String query = "select * from serieusuario where username='" + usuActual + "' and idserie = '" + serie.getId() + "'";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        while (rs.next()) {
+            serie.setTemporada(rs.getInt("temporada"));
+            serie.setCapitulo(rs.getInt("capitulo"));
+            serie.setMinuto(rs.getInt("minuto"));
+            serie.setValoracion(rs.getInt("valoracion"));
+        }
+        rs.close();
+        st.close();
+        return serie;
+    }
+    
     //Funcion que selecciona los datos de la pelicula del usuario.
     public static Pelicula selectPeliculaUsuario(Pelicula peli) throws SQLException {
         String query = "select * from peliculausuario where username='" + usuActual + "' and idpelicula = '" + peli.getId() + "'";
@@ -151,6 +168,28 @@ public class CollectorDao {
         rs.close();
         st.close();
         return book;
+    }
+    
+    //Funcion que selecciona todas las series registradas en la bbdd.
+    public static ArrayList<Serie> selectSerie() throws SQLException {
+        String query = "select * from serie";
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        ArrayList<Serie> activity = new ArrayList<>();
+        while (rs.next()) {
+            Serie s = new Serie();
+            s.setId(rs.getInt("idserie"));
+            s.setDireccion(rs.getString("direccion"));
+            s.setNumTemporadas(rs.getInt("numtemporadas"));
+            s.setNumCapitulos(rs.getInt("numcapitulos"));
+            s.setDuracionCapitulo(rs.getInt("duracioncapitulo"));
+            s.setNombre(rs.getString("nombreserie"));
+            s.setGenero(rs.getInt("idgenero"));
+            activity.add(s);
+        }
+        rs.close();
+        st.close();
+        return activity;
     }
     
     //Funcion que selecciona todas las peliculas registradas en la bbdd.
@@ -251,6 +290,20 @@ public class CollectorDao {
         }
     }
     
+    //Funcion para modificar en la bbdd la serie de un usuario.
+    public static void modificarSerieUsuario(Serie s) throws SQLException{
+        String update = "update serieusuario set temporada=?, capitulo=?, minuto=?, valoracion=? where username=? and idserie=?";
+        PreparedStatement ps = conexion.prepareStatement(update);
+        ps.setInt(1, s.getTemporada());
+        ps.setInt(2, s.getCapitulo());
+        ps.setInt(3, s.getMinuto());
+        ps.setInt(4, s.getValoracion());
+        ps.setString(5, usuActual);
+        ps.setInt(6, s.getId());
+        ps.executeUpdate();
+        ps.close();
+    }
+    
     //Funcion para modificar en la bbdd la pelicula de un usuario.
     public static void modificarPeliculaUsuario(Pelicula p) throws SQLException{
         String update = "update peliculausuario set minuto=?, valoracion=? where username=? and idpelicula=?";
@@ -286,6 +339,20 @@ public class CollectorDao {
         ps.close();
     }
     
+    //Funcion para insertar una serie en la bbdd.
+    public static void insertarSerieUsuario(Serie s) throws SQLException {
+        String insert = "insert into serieusuario values (?, ?, ?, ?, ?, ?);";
+        PreparedStatement ps = conexion.prepareStatement(insert);
+        ps.setString(1, usuActual);
+        ps.setInt(2, s.getId());
+        ps.setInt(3, s.getTemporada());
+        ps.setInt(4, s.getCapitulo());
+        ps.setInt(5, s.getMinuto());
+        ps.setInt(6, s.getValoracion());
+        ps.executeUpdate();
+        ps.close();
+    }
+    
     //Funcion para insertar una pelicula en la bbdd.
     public static void insertarPeliculaUsuario(Pelicula p) throws SQLException {
         String insert = "insert into peliculausuario values (?, ?, ?, ?);";
@@ -317,6 +384,21 @@ public class CollectorDao {
         ps.setString(1, usuActual);
         ps.setInt(2, j.getId());
         ps.setInt(3, j.getValoracion());
+        ps.executeUpdate();
+        ps.close();
+    }
+    
+    //Funcion para insertar una serie en la bbdd.
+    public static void insertarSerie(Serie s) throws SQLException {
+        String insert = "insert into serie values (?, ?, ?, ?, ?, ?, ?);";
+        PreparedStatement ps = conexion.prepareStatement(insert);
+        ps.setString(1, null);
+        ps.setString(2, s.getNombre());
+        ps.setString(3, s.getDireccion());
+        ps.setInt(4, s.getNumTemporadas());
+        ps.setInt(5, s.getNumCapitulos());
+        ps.setInt(6, s.getDuracionCapitulo());
+        ps.setInt(7, s.getGenero());
         ps.executeUpdate();
         ps.close();
     }
@@ -374,6 +456,22 @@ public class CollectorDao {
         ps.close();
     }
     
+    //Función que borra un usuario.
+    public static void eliminarUsuario(String usu) throws SQLException {
+        String delete = "delete from usuario where username='" + usu + "'";
+        Statement st = conexion.createStatement();
+        st.executeUpdate(delete);
+        st.close();
+    }
+    
+    //Función que borra una serie.
+    public static void eliminarSerieUsuario(int id) throws SQLException {
+        String delete = "delete from serieusuario where username='" + usuActual + "' and idserie = '" + id + "'";
+        Statement st = conexion.createStatement();
+        st.executeUpdate(delete);
+        st.close();
+    }
+    
     //Función que borra una pelicula.
     public static void eliminarPeliculaUsuario(int id) throws SQLException {
         String delete = "delete from peliculausuario where username='" + usuActual + "' and idpelicula = '" + id + "'";
@@ -398,6 +496,20 @@ public class CollectorDao {
         st.close();
     }
 
+    //Funcion para comprobar si el usuario tiene una serie.
+    public static boolean checkSerieUsuario(int id) throws SQLException {
+        String select = "select * from serieusuario where username ='" + usuActual + "'and idserie = '" + id + "'";
+        Statement statment = conexion.createStatement();
+        ResultSet result = statment.executeQuery(select);
+        boolean existe = false;
+        if (result.next()) {
+            existe = true;
+        }
+        result.close();
+        statment.close();
+        return existe;
+    }
+    
     //Funcion para comprobar si el usuario tiene una pelicula.
     public static boolean checkPeliculaUsuario(int id) throws SQLException {
         String select = "select * from peliculausuario where username ='" + usuActual + "'and idpelicula = '" + id + "'";
@@ -457,6 +569,20 @@ public class CollectorDao {
     //Funcion para comprobar si existe un juego en la bbdd con el mismo nombre y desarolladora.
     public static boolean checkJuego(Juego j) throws SQLException {
         String select = "select * from videojuego where nombrevideojuego ='" + j.getNombre() + "'and desarrolladora = '" + j.getDesarrolladora()+ "'";
+        Statement statment = conexion.createStatement();
+        ResultSet result = statment.executeQuery(select);
+        boolean existe = false;
+        if (result.next()) {
+            existe = true;
+        }
+        result.close();
+        statment.close();
+        return existe;
+    }
+    
+    //Funcion para comprobar si existe una serie en la bbdd con el mismo nombre y director.
+    public static boolean checkSerie(Serie s) throws SQLException {
+        String select = "select * from serie where nombreserie ='" + s.getNombre() + "'and direccion = '" + s.getDireccion() + "'";
         Statement statment = conexion.createStatement();
         ResultSet result = statment.executeQuery(select);
         boolean existe = false;
@@ -531,11 +657,7 @@ public class CollectorDao {
         return t;
     }
     
-    /**
-    * Función para conectar con la bbdd
-    *
-    * @throws SQLException
-    */
+    //Función para conectar con la bbdd
     public static void conectar() throws SQLException { 
         String url = "jdbc:mysql://localhost:3306/thecollector?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
         String user = "root";
@@ -543,11 +665,7 @@ public class CollectorDao {
         conexion = DriverManager.getConnection(url, user, pass);
     }
 
-    /**
-     * Función para desconectar con la bbdd
-     *
-     * @throws SQLException
-     */
+    //Función para desconectar con la bbdd
     public static void desconectar() throws SQLException {
         if (conexion != null) {
             conexion.close();

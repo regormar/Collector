@@ -530,7 +530,9 @@ public class MainMenu extends javax.swing.JFrame {
                     registroPelicula.setVisible(true);
                     break;
                 case "SERIES":
-                    
+                    RegistroSerie registroSerie = new RegistroSerie();
+                    registroSerie.setLocationRelativeTo(null);
+                    registroSerie.setVisible(true);
                     break;  
                 default:
                     Registro registro = new Registro();
@@ -561,7 +563,9 @@ public class MainMenu extends javax.swing.JFrame {
                     añadirPelicula.setVisible(true);
                     break;
                 case "SERIES":
-
+                    AñadirSerie añadirSerie = new AñadirSerie();
+                    añadirSerie.setLocationRelativeTo(null);
+                    añadirSerie.setVisible(true);
                     break;              
             }
         }catch (AlertException ex) { 
@@ -588,8 +592,14 @@ public class MainMenu extends javax.swing.JFrame {
                     eliminarPelicula.setVisible(true);
                     break;
                 case "SERIES":
-
-                    break;              
+                    EliminarSerie eliminarSerie = new EliminarSerie();
+                    eliminarSerie.setLocationRelativeTo(null);
+                    eliminarSerie.setVisible(true);
+                    break;     
+                default:
+                    EliminarUsuario eliminarUsuario = new EliminarUsuario();
+                    eliminarUsuario.setLocationRelativeTo(null);
+                    eliminarUsuario.setVisible(true);           
             }
         }catch (AlertException ex) { 
             mostrar.mostrar(ex);             
@@ -615,7 +625,9 @@ public class MainMenu extends javax.swing.JFrame {
                     editarPelicula.setVisible(true);
                     break;
                 case "SERIES":
-
+                    EditarSerie editarSerie = new EditarSerie();
+                    editarSerie.setLocationRelativeTo(null);
+                    editarSerie.setVisible(true);
                     break; 
                 default:
                     EditarUsuario editarUsuario = new EditarUsuario();
@@ -662,7 +674,9 @@ public class MainMenu extends javax.swing.JFrame {
                     mostrarPeliculas.setVisible(true);
                     break;
                 case "SERIES":
-
+                    MostrarSeries mostrarSeries = new MostrarSeries();
+                    mostrarSeries.setLocationRelativeTo(null);
+                    mostrarSeries.setVisible(true);
                     break;              
             }
         }catch (AlertException ex) { 

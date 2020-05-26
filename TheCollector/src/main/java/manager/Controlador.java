@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import modelo.Juego;
 import modelo.Libro;
 import modelo.Pelicula;
+import modelo.Serie;
 import modelo.Usuario;
 import persistencia.CollectorDao;
 
@@ -77,6 +78,18 @@ public class Controlador {
             currentUser = usu;
         }
         throw new Succestion(Succestion.USER_EDITED); 
+    }
+    
+    //Funcion para validar el registro de una serie.
+    public static void validarSerie(Serie s) throws Excepcion, SQLException, Succestion {
+        if(s.getDireccion().equals("") || s.getNombre().equals("")){
+            throw new Excepcion(Excepcion.ERROR_EMPTY_FIELDS);
+        }
+        if(CollectorDao.checkSerie(s)){
+            throw new Excepcion(Excepcion.ERROR_SERIE_EXIST);
+        }
+        CollectorDao.insertarSerie(s);
+        throw new Succestion(Succestion.SERIE_REGISTERED); 
     }
     
     //Funcion para validar el registro de una pelicula.

@@ -6,7 +6,6 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-import manager.Controlador;
 import modelo.Pelicula;
 import persistencia.CollectorDao;
 

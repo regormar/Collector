@@ -7,43 +7,43 @@ import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import modelo.Pelicula;
+import modelo.Serie;
 import persistencia.CollectorDao;
 
-public class AñadirPelicula extends javax.swing.JDialog {
+public class AñadirSerie extends javax.swing.JDialog {
 
     private static MostrarExcepciones mostrar;
     public static CollectorDao collectorDao;
     private int mousepX;
     private int mousepY;
-    private static ArrayList<Pelicula> peliculas = new ArrayList<>();
-    private static ArrayList<Pelicula> peliculasUsuario = new ArrayList<>();
-    private static Pelicula peli;
+    private static ArrayList<Serie> series = new ArrayList<>();
+    private static ArrayList<Serie> seriesUsuario = new ArrayList<>();
+    private static Serie serie;
     
-    public AñadirPelicula() throws AlertException {
+    public AñadirSerie() throws AlertException {
         initComponents();
         mostrar = MostrarExcepciones.getInstace();
         actualizarComboBox();
     }
     
-    //Funcion que actualiza los datos de las peliculas.
+    //Funcion que actualiza los datos de las series.
     public void actualizarComboBox() throws AlertException{
         try {
-            peliculaComboBox.removeAllItems();
-            peliculaComboBox.addItem("Selecciona una pelicula:");
-            peliculas = collectorDao.selectPeliculas();
-            if(!peliculas.isEmpty()){
-                for(Pelicula pelicula : peliculas){
-                    if(!collectorDao.checkPeliculaUsuario(pelicula.getId())){
-                        peliculaComboBox.addItem(pelicula.getNombre() + " - " + pelicula.getDireccion());
-                        peliculasUsuario.add(pelicula);
+            serieComboBox.removeAllItems();
+            serieComboBox.addItem("Selecciona una serie:");
+            series = collectorDao.selectSerie();
+            if(!series.isEmpty()){
+                for(Serie s : series){
+                    if(!collectorDao.checkSerieUsuario(s.getId())){
+                        serieComboBox.addItem(s.getNombre() + " - " + s.getDireccion());
+                        seriesUsuario.add(s);
                     }
                 }
-                if(peliculaComboBox.getItemCount() <= 1){
-                    throw new AlertException(AlertException.NO_EXISTEN_MAS_PELICULAS);
+                if(serieComboBox.getItemCount() <= 1){
+                    throw new AlertException(AlertException.NO_EXISTEN_MAS_SERIES);
                 }
             }else{
-                throw new AlertException(AlertException.NO_EXISTEN_PELICULAS);
+                throw new AlertException(AlertException.NO_EXISTEN_SERIES);
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -60,7 +60,7 @@ public class AñadirPelicula extends javax.swing.JDialog {
     private void initComponents() {
 
         PanelFondo = new javax.swing.JPanel();
-        LabelPelicula = new javax.swing.JLabel();
+        LabelSerie = new javax.swing.JLabel();
         btnAnyadir = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         tfCerrar = new javax.swing.JLabel();
@@ -70,19 +70,22 @@ public class AñadirPelicula extends javax.swing.JDialog {
         PanelTitulo = new javax.swing.JPanel();
         LabelAñadir = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        peliculaComboBox = new javax.swing.JComboBox<>();
+        serieComboBox = new javax.swing.JComboBox<>();
         spinnerValoracion = new javax.swing.JSpinner();
         spinnerMinuto = new javax.swing.JSpinner();
+        LabelTemporada = new javax.swing.JLabel();
+        spinnerTemporada = new javax.swing.JSpinner();
+        LabelCapitulo = new javax.swing.JLabel();
+        spinnerCapitulo = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setUndecorated(true);
 
         PanelFondo.setBackground(new java.awt.Color(255, 255, 255));
         PanelFondo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        LabelPelicula.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        LabelPelicula.setText("PELICULA");
+        LabelSerie.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
+        LabelSerie.setText("SERIE");
 
         btnAnyadir.setBackground(new java.awt.Color(51, 51, 51));
         btnAnyadir.setFont(new java.awt.Font("Tiza", 0, 8)); // NOI18N
@@ -144,7 +147,7 @@ public class AñadirPelicula extends javax.swing.JDialog {
 
         LabelAñadir.setFont(new java.awt.Font("Tiza", 0, 24)); // NOI18N
         LabelAñadir.setForeground(new java.awt.Color(255, 255, 255));
-        LabelAñadir.setText("ANADIR PELICULA");
+        LabelAñadir.setText("ANADIR SERIE");
 
         javax.swing.GroupLayout PanelTituloLayout = new javax.swing.GroupLayout(PanelTitulo);
         PanelTitulo.setLayout(PanelTituloLayout);
@@ -174,13 +177,25 @@ public class AñadirPelicula extends javax.swing.JDialog {
             }
         });
 
-        peliculaComboBox.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        serieComboBox.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
 
         spinnerValoracion.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         spinnerValoracion.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
 
         spinnerMinuto.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         spinnerMinuto.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+
+        LabelTemporada.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
+        LabelTemporada.setText("TEMPORADA");
+
+        spinnerTemporada.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        spinnerTemporada.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+
+        LabelCapitulo.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
+        LabelCapitulo.setText("CAPITULO");
+
+        spinnerCapitulo.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        spinnerCapitulo.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
         javax.swing.GroupLayout PanelFondoLayout = new javax.swing.GroupLayout(PanelFondo);
         PanelFondo.setLayout(PanelFondoLayout);
@@ -192,21 +207,25 @@ public class AñadirPelicula extends javax.swing.JDialog {
                 .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelFondoLayout.createSequentialGroup()
+            .addGroup(PanelFondoLayout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LabelCapitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(PanelFondoLayout.createSequentialGroup()
                         .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAnyadir, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(PanelFondoLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelFondoLayout.createSequentialGroup()
                         .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(LabelMinuto, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LabelPelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LabelValoracion, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(LabelSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(LabelValoracion, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(LabelTemporada, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(peliculaComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(spinnerTemporada)
+                            .addComponent(spinnerCapitulo)
+                            .addComponent(serieComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(spinnerValoracion, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                             .addComponent(spinnerMinuto))))
                 .addGap(64, 64, 64))
@@ -221,8 +240,16 @@ public class AñadirPelicula extends javax.swing.JDialog {
                 .addComponent(PanelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelPelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(peliculaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(LabelSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(serieComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LabelTemporada, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spinnerTemporada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LabelCapitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spinnerCapitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LabelMinuto, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -254,30 +281,40 @@ public class AñadirPelicula extends javax.swing.JDialog {
 
     private void btnAnyadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnyadirActionPerformed
         try{
-            int pelicula = peliculaComboBox.getSelectedIndex();
-            if(pelicula == 0){
-                throw new Excepcion(Excepcion.PELICULA_INVALIDA);
+            int ser = serieComboBox.getSelectedIndex();
+            if(ser == 0){
+                throw new Excepcion(Excepcion.SERIE_INVALIDA);
             }
-            int posicion = pelicula - 1;
-            peli = peliculasUsuario.get(posicion);
+            int posicion = ser - 1;
+            serie = seriesUsuario.get(posicion);
+            int temporada = Integer.parseInt(spinnerTemporada.getValue().toString());
+            if(temporada > serie.getNumTemporadas()){
+                throw new Excepcion(Excepcion.INVALID_T_SERI_NUMBER);
+            }
+            int capitulo = Integer.parseInt(spinnerCapitulo.getValue().toString());
+            if(capitulo > serie.getNumCapitulos()){
+                throw new Excepcion(Excepcion.INVALID_C_SERI_NUMBER);
+            }
             int minuto = Integer.parseInt(spinnerMinuto.getValue().toString());
-            if(minuto > peli.getDuracion()){
-                throw new Excepcion(Excepcion.INVALID_MINUTE_NUMBER);
+            if(minuto > serie.getDuracionCapitulo()){
+                throw new Excepcion(Excepcion.INVALID_M_SERI_NUMBER);
             }
             int valoracion = Integer.parseInt(spinnerValoracion.getValue().toString());
             try {
-                peli.setMinuto(minuto);
-                peli.setValoracion(valoracion);
-                collectorDao.insertarPeliculaUsuario(peli);
-                throw new Succestion(Succestion.MOVIE_ADDED); 
+                serie.setTemporada(temporada);
+                serie.setCapitulo(capitulo);
+                serie.setMinuto(minuto);
+                serie.setValoracion(valoracion);
+                collectorDao.insertarSerieUsuario(serie);
+                throw new Succestion(Succestion.SERIE_ADDED);
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
         } catch(Excepcion ex){
             result.setText(ex.getMessage());
         } catch(Succestion ex) {
-            peliculas.clear();
-            peliculasUsuario.clear();
+            series.clear();
+            seriesUsuario.clear();
             mostrar.mostrar(ex);
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
@@ -288,8 +325,8 @@ public class AñadirPelicula extends javax.swing.JDialog {
     }//GEN-LAST:event_tfCerrarMouseMoved
 
     private void tfCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseClicked
-        peliculas.clear();
-        peliculasUsuario.clear();
+        series.clear();
+        seriesUsuario.clear();
         this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_tfCerrarMouseClicked
 
@@ -310,17 +347,21 @@ public class AñadirPelicula extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LabelAñadir;
+    private javax.swing.JLabel LabelCapitulo;
     private javax.swing.JLabel LabelMinuto;
-    private javax.swing.JLabel LabelPelicula;
+    private javax.swing.JLabel LabelSerie;
+    private javax.swing.JLabel LabelTemporada;
     private javax.swing.JLabel LabelValoracion;
     private javax.swing.JPanel PanelFondo;
     private javax.swing.JPanel PanelTitulo;
     private javax.swing.JButton btnAnyadir;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JComboBox<String> peliculaComboBox;
     private javax.swing.JLabel result;
+    private javax.swing.JComboBox<String> serieComboBox;
+    private javax.swing.JSpinner spinnerCapitulo;
     private javax.swing.JSpinner spinnerMinuto;
+    private javax.swing.JSpinner spinnerTemporada;
     private javax.swing.JSpinner spinnerValoracion;
     private javax.swing.JLabel tfCerrar;
     // End of variables declaration//GEN-END:variables

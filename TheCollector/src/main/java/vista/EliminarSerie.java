@@ -7,43 +7,43 @@ import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import modelo.Pelicula;
+import modelo.Serie;
 import persistencia.CollectorDao;
 
-public class AñadirPelicula extends javax.swing.JDialog {
+public class EliminarSerie extends javax.swing.JDialog {
 
     private static MostrarExcepciones mostrar;
     public static CollectorDao collectorDao;
     private int mousepX;
     private int mousepY;
-    private static ArrayList<Pelicula> peliculas = new ArrayList<>();
-    private static ArrayList<Pelicula> peliculasUsuario = new ArrayList<>();
-    private static Pelicula peli;
+    private static ArrayList<Serie> series = new ArrayList<>();
+    private static ArrayList<Serie> seriesUsuario = new ArrayList<>();
+    private static Serie serie;
     
-    public AñadirPelicula() throws AlertException {
+    public EliminarSerie() throws AlertException {
         initComponents();
         mostrar = MostrarExcepciones.getInstace();
         actualizarComboBox();
     }
     
-    //Funcion que actualiza los datos de las peliculas.
+    //Funcion que actualiza los datos de las series.
     public void actualizarComboBox() throws AlertException{
         try {
-            peliculaComboBox.removeAllItems();
-            peliculaComboBox.addItem("Selecciona una pelicula:");
-            peliculas = collectorDao.selectPeliculas();
-            if(!peliculas.isEmpty()){
-                for(Pelicula pelicula : peliculas){
-                    if(!collectorDao.checkPeliculaUsuario(pelicula.getId())){
-                        peliculaComboBox.addItem(pelicula.getNombre() + " - " + pelicula.getDireccion());
-                        peliculasUsuario.add(pelicula);
+            serieComboBox.removeAllItems();
+            serieComboBox.addItem("Selecciona una serie:");
+            series = collectorDao.selectSerie();
+            if(!series.isEmpty()){
+                for(Serie s : series){
+                    if(collectorDao.checkSerieUsuario(s.getId())){
+                        serieComboBox.addItem(s.getNombre()+ " - " + s.getDireccion());
+                        seriesUsuario.add(s);
                     }
                 }
-                if(peliculaComboBox.getItemCount() <= 1){
-                    throw new AlertException(AlertException.NO_EXISTEN_MAS_PELICULAS);
+                if(serieComboBox.getItemCount() <= 1){
+                    throw new AlertException(AlertException.NO_TIENE_SERIES);
                 }
             }else{
-                throw new AlertException(AlertException.NO_EXISTEN_PELICULAS);
+                throw new AlertException(AlertException.NO_EXISTEN_SERIES);
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -60,38 +60,33 @@ public class AñadirPelicula extends javax.swing.JDialog {
     private void initComponents() {
 
         PanelFondo = new javax.swing.JPanel();
-        LabelPelicula = new javax.swing.JLabel();
-        btnAnyadir = new javax.swing.JButton();
+        LabelSerie = new javax.swing.JLabel();
+        btnEliminar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         tfCerrar = new javax.swing.JLabel();
         result = new javax.swing.JLabel();
-        LabelMinuto = new javax.swing.JLabel();
-        LabelValoracion = new javax.swing.JLabel();
         PanelTitulo = new javax.swing.JPanel();
-        LabelAñadir = new javax.swing.JLabel();
+        LabelEliminar = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        peliculaComboBox = new javax.swing.JComboBox<>();
-        spinnerValoracion = new javax.swing.JSpinner();
-        spinnerMinuto = new javax.swing.JSpinner();
+        serieComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setUndecorated(true);
 
         PanelFondo.setBackground(new java.awt.Color(255, 255, 255));
         PanelFondo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        LabelPelicula.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        LabelPelicula.setText("PELICULA");
+        LabelSerie.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
+        LabelSerie.setText("SERIE");
 
-        btnAnyadir.setBackground(new java.awt.Color(51, 51, 51));
-        btnAnyadir.setFont(new java.awt.Font("Tiza", 0, 8)); // NOI18N
-        btnAnyadir.setForeground(new java.awt.Color(255, 255, 255));
-        btnAnyadir.setText("AÑADIR");
-        btnAnyadir.setBorder(null);
-        btnAnyadir.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminar.setBackground(new java.awt.Color(51, 51, 51));
+        btnEliminar.setFont(new java.awt.Font("Tiza", 0, 8)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminar.setText("ELIMINAR");
+        btnEliminar.setBorder(null);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnyadirActionPerformed(evt);
+                btnEliminarActionPerformed(evt);
             }
         });
 
@@ -133,18 +128,12 @@ public class AñadirPelicula extends javax.swing.JDialog {
 
         result.setForeground(new java.awt.Color(255, 0, 0));
 
-        LabelMinuto.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        LabelMinuto.setText("MINUTO ACTUAL");
-
-        LabelValoracion.setFont(new java.awt.Font("Tiza", 0, 11)); // NOI18N
-        LabelValoracion.setText("VALORACION");
-
         PanelTitulo.setBackground(new java.awt.Color(51, 51, 51));
         PanelTitulo.setForeground(new java.awt.Color(51, 51, 51));
 
-        LabelAñadir.setFont(new java.awt.Font("Tiza", 0, 24)); // NOI18N
-        LabelAñadir.setForeground(new java.awt.Color(255, 255, 255));
-        LabelAñadir.setText("ANADIR PELICULA");
+        LabelEliminar.setFont(new java.awt.Font("Tiza", 0, 24)); // NOI18N
+        LabelEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        LabelEliminar.setText("ELIMINAR SERIE");
 
         javax.swing.GroupLayout PanelTituloLayout = new javax.swing.GroupLayout(PanelTitulo);
         PanelTitulo.setLayout(PanelTituloLayout);
@@ -152,14 +141,14 @@ public class AñadirPelicula extends javax.swing.JDialog {
             PanelTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTituloLayout.createSequentialGroup()
                 .addGap(56, 56, 56)
-                .addComponent(LabelAñadir)
+                .addComponent(LabelEliminar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         PanelTituloLayout.setVerticalGroup(
             PanelTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTituloLayout.createSequentialGroup()
                 .addContainerGap(30, Short.MAX_VALUE)
-                .addComponent(LabelAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(LabelEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
         );
 
@@ -174,13 +163,7 @@ public class AñadirPelicula extends javax.swing.JDialog {
             }
         });
 
-        peliculaComboBox.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-
-        spinnerValoracion.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        spinnerValoracion.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
-
-        spinnerMinuto.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        spinnerMinuto.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        serieComboBox.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout PanelFondoLayout = new javax.swing.GroupLayout(PanelFondo);
         PanelFondo.setLayout(PanelFondoLayout);
@@ -196,19 +179,13 @@ public class AñadirPelicula extends javax.swing.JDialog {
                 .addGap(43, 43, 43)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelFondoLayout.createSequentialGroup()
-                        .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                        .addComponent(btnAnyadir, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(PanelFondoLayout.createSequentialGroup()
-                        .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LabelMinuto, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LabelPelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LabelValoracion, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(peliculaComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(spinnerValoracion, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-                            .addComponent(spinnerMinuto))))
+                        .addComponent(LabelSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(serieComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(64, 64, 64))
         );
         PanelFondoLayout.setVerticalGroup(
@@ -221,19 +198,11 @@ public class AñadirPelicula extends javax.swing.JDialog {
                 .addComponent(PanelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelPelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(peliculaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelMinuto, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(spinnerMinuto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelValoracion, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(spinnerValoracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(LabelSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(serieComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(PanelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAnyadir, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27))
         );
@@ -252,44 +221,38 @@ public class AñadirPelicula extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAnyadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnyadirActionPerformed
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         try{
-            int pelicula = peliculaComboBox.getSelectedIndex();
-            if(pelicula == 0){
-                throw new Excepcion(Excepcion.PELICULA_INVALIDA);
+            int ser = serieComboBox.getSelectedIndex();
+            if(ser == 0){
+                throw new Excepcion(Excepcion.SERIE_INVALIDA);
             }
-            int posicion = pelicula - 1;
-            peli = peliculasUsuario.get(posicion);
-            int minuto = Integer.parseInt(spinnerMinuto.getValue().toString());
-            if(minuto > peli.getDuracion()){
-                throw new Excepcion(Excepcion.INVALID_MINUTE_NUMBER);
-            }
-            int valoracion = Integer.parseInt(spinnerValoracion.getValue().toString());
+            int posicion = ser - 1;
+            serie = seriesUsuario.get(posicion);
             try {
-                peli.setMinuto(minuto);
-                peli.setValoracion(valoracion);
-                collectorDao.insertarPeliculaUsuario(peli);
-                throw new Succestion(Succestion.MOVIE_ADDED); 
+                collectorDao.eliminarSerieUsuario(serie.getId());
+                throw new Succestion(Succestion.SERIE_REMOVED);
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
         } catch(Excepcion ex){
+            serieComboBox.setSelectedIndex(0);
             result.setText(ex.getMessage());
         } catch(Succestion ex) {
-            peliculas.clear();
-            peliculasUsuario.clear();
+            series.clear();
+            seriesUsuario.clear();
             mostrar.mostrar(ex);
             this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
-    }//GEN-LAST:event_btnAnyadirActionPerformed
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void tfCerrarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseMoved
         jPanel4.setBackground(Color.decode("#EAEAEA"));
     }//GEN-LAST:event_tfCerrarMouseMoved
 
     private void tfCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfCerrarMouseClicked
-        peliculas.clear();
-        peliculasUsuario.clear();
+        series.clear();
+        seriesUsuario.clear();
         this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_tfCerrarMouseClicked
 
@@ -309,19 +272,15 @@ public class AñadirPelicula extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel5MousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel LabelAñadir;
-    private javax.swing.JLabel LabelMinuto;
-    private javax.swing.JLabel LabelPelicula;
-    private javax.swing.JLabel LabelValoracion;
+    private javax.swing.JLabel LabelEliminar;
+    private javax.swing.JLabel LabelSerie;
     private javax.swing.JPanel PanelFondo;
     private javax.swing.JPanel PanelTitulo;
-    private javax.swing.JButton btnAnyadir;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JComboBox<String> peliculaComboBox;
     private javax.swing.JLabel result;
-    private javax.swing.JSpinner spinnerMinuto;
-    private javax.swing.JSpinner spinnerValoracion;
+    private javax.swing.JComboBox<String> serieComboBox;
     private javax.swing.JLabel tfCerrar;
     // End of variables declaration//GEN-END:variables
 }

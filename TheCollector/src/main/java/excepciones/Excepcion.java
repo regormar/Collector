@@ -24,6 +24,11 @@ public class Excepcion extends Exception {
     public static final int JUEGO_INVALIDO = 15;
     public static final int GAME_INVALIDO = 16;
     public static final int INVALID_USER = 17;
+    public static final int ERROR_SERIE_EXIST = 18;
+    public static final int INVALID_M_SERI_NUMBER = 19;
+    public static final int INVALID_T_SERI_NUMBER = 20;
+    public static final int INVALID_C_SERI_NUMBER = 21;
+    public static final int SERIE_INVALIDA = 22;
     
     private int code;
 
@@ -45,7 +50,12 @@ public class Excepcion extends Exception {
         "Este videojuego ya existe",
         "Seleccion invalida: Seleccione un juego válido",
         "Seleccion invalida: Seleccione un videojuego válido",
-        "Seleccion invalida: Seleccione un usuario válido"
+        "Seleccion invalida: Seleccione un usuario válido",
+        "Esta serie ya existe",
+        "El minuto del capitulo no puede ser superior al de la duración total",
+        "El numero de temporada no puede ser superior al del total de temporadas",
+        "El numero de capitulo no puede ser superior al del total de capitulos",          
+        "Seleccion invalida: Seleccione una serie válida"
     );
 
     public Excepcion(int code) {
