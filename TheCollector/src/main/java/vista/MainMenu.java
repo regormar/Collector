@@ -677,7 +677,11 @@ public class MainMenu extends javax.swing.JFrame {
                     MostrarSeries mostrarSeries = new MostrarSeries();
                     mostrarSeries.setLocationRelativeTo(null);
                     mostrarSeries.setVisible(true);
-                    break;              
+                    break;  
+                default:
+                    MostrarUsuarios mostrarUsuarios = new MostrarUsuarios();
+                    mostrarUsuarios.setLocationRelativeTo(null);
+                    mostrarUsuarios.setVisible(true);             
             }
         }catch (AlertException ex) { 
             mostrar.mostrar(ex);             
